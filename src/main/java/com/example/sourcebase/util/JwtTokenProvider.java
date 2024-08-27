@@ -1,9 +1,7 @@
-package com.example.sourcebase.utils;
+package com.example.sourcebase.util;
 
 
 import com.example.sourcebase.domain.dto.resdto.user.UserRoleResDto;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;

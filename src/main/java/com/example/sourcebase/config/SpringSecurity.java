@@ -45,16 +45,7 @@
 //                                .requestMatchers("/api/auths/**").permitAll()
 //                                .requestMatchers(HttpMethod.POST,"/api/auths/**").permitAll()
 //                                .requestMatchers("/static/**").permitAll()
-//                                .requestMatchers("/").permitAll()
-//                                .requestMatchers("/api/categories/**").permitAll()
-//                                .requestMatchers("/api/categories/jobs/**").permitAll()
-//                                .requestMatchers("/api/categories").permitAll()
-//                                .requestMatchers("/api/jobs/**").permitAll()
-//                                .requestMatchers("/confirm").hasRole("USER")
-//                                .requestMatchers("/api/users/current-user/**").permitAll()
-//                                .requestMatchers("/api/orders/info-order/**").hasRole("USER")
-//                                .requestMatchers("/api/users/**").permitAll()
-//                                .requestMatchers("/api/dash-boards/**").permitAll()
+
 //
 //                                .anyRequest().authenticated())
 //                .logout(

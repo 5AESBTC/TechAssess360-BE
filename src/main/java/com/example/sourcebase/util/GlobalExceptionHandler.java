@@ -1,4 +1,4 @@
-package com.example.sourcebase.utils;
+package com.example.sourcebase.util;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
