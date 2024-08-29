@@ -15,10 +15,18 @@ public enum ErrorCode {
     ROLE_NOT_FOUND(404, "Role Not Found", HttpStatus.NOT_FOUND),
     USER_NOT_EXISTS(409, "User Not Exists", HttpStatus.CONFLICT),
     ID_NOT_EXISTS(409, "Id Not Exists", HttpStatus.CONFLICT),
+<<<<<<< HEAD
     ILLEGAL_STATE(400, "Wrong password or username", HttpStatus.BAD_REQUEST),
     ILLEGAL_ARGUMENT(409, "Email, Phone or Username Already Exists", HttpStatus.CONFLICT),
     VALIDATION_ERROR(400, "", HttpStatus.BAD_REQUEST),
     CREATED(201, "Success Created" , HttpStatus.CREATED),;
+=======
+    USERNAME_EXISTS(409, "Username Exists", HttpStatus.CONFLICT),
+    ILLEGAL_STATE(400, "Wrong password or username", HttpStatus.BAD_REQUEST),
+    ILLEGAL_ARGUMENT(409, "Email, Phone or Username Already Exists", HttpStatus.CONFLICT),
+    VALIDATION_ERROR(400, "", HttpStatus.BAD_REQUEST)
+    ;
+>>>>>>> e96da83 (update source base)
     int code;
     String message;
     HttpStatus httpStatus;

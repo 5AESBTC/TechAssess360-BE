@@ -9,7 +9,10 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface ItemMapper {
     ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
+<<<<<<< HEAD
 
+=======
+>>>>>>> e96da83 (update source base)
     Item reqDtoToItem(ItemReqDTO reqDTO);
     ItemResDTO toResDTO(Item item);
 }

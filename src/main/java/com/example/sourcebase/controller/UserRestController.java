@@ -1,5 +1,6 @@
 package com.example.sourcebase.controller;
 
+<<<<<<< HEAD
 import com.example.sourcebase.domain.User;
 import com.example.sourcebase.domain.dto.reqdto.user.RegisterReqDTO;
 import com.example.sourcebase.domain.dto.resdto.user.UserResDTO;
@@ -9,14 +10,25 @@ import com.example.sourcebase.util.ResponseData;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
+=======
+import com.example.sourcebase.domain.dto.reqdto.user.RegisterReqDTO;
+import com.example.sourcebase.service.IUserService;
+import com.example.sourcebase.util.SuccessCode;
+import com.example.sourcebase.util.ResponseData;
+import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
+>>>>>>> e96da83 (update source base)
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+<<<<<<< HEAD
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+=======
+>>>>>>> e96da83 (update source base)
 @RestController
 @AllArgsConstructor
 @RequestMapping("api/users")
@@ -32,9 +44,15 @@ public class UserRestController {
 //            e.printStackTrace();
 //        }
         return ResponseData.builder().data(userService.register(registerReqDTO))
+<<<<<<< HEAD
                 .code(ErrorCode.CREATED.getCode())
                 .message(ErrorCode.CREATED.getMessage())
                 .status(ErrorCode.CREATED.getHttpStatus().name())
+=======
+                .code(SuccessCode.CREATED.getCode())
+                .message(SuccessCode.CREATED.getMessage())
+                .status(SuccessCode.CREATED.getHttpStatus().name())
+>>>>>>> e96da83 (update source base)
                 .build();
     }
 }
