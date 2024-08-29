@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.HttpStatus;
 
+import javax.tools.Diagnostic;
+
 @Getter
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
@@ -18,7 +20,10 @@ public enum ErrorCode {
     ILLEGAL_STATE(400, "Wrong password or username", HttpStatus.BAD_REQUEST),
     ILLEGAL_ARGUMENT(409, "Email, Phone or Username Already Exists", HttpStatus.CONFLICT),
     VALIDATION_ERROR(400, "", HttpStatus.BAD_REQUEST),
-    CREATED(201, "Success Created" , HttpStatus.CREATED),;
+    CREATED(201, "Success Created" , HttpStatus.CREATED),
+    DELETE_SUCCESSFUL(1012, "Delete successful", HttpStatus.OK),
+    UPDATE_SUCCESSFUL(1013, "Update successful", HttpStatus.OK),
+    GET_SUCCESSFUL(1010, "Get successful", HttpStatus.OK),;
     int code;
     String message;
     HttpStatus httpStatus;
