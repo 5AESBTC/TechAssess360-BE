@@ -1,38 +1,40 @@
 package com.example.sourcebase.service.impl;
 
 import com.example.sourcebase.domain.Item;
-import com.example.sourcebase.domain.dto.reqdto.ItemReqDto;
-import com.example.sourcebase.domain.dto.resdto.ListItemResDto;
-import com.example.sourcebase.domain.dto.resdto.ItemResDto;
+import com.example.sourcebase.domain.dto.reqdto.ItemReqDTO;
+import com.example.sourcebase.domain.dto.resdto.ItemResDTO;
 import com.example.sourcebase.mapper.ItemMapper;
 import com.example.sourcebase.repository.IItemRepository;
 import com.example.sourcebase.service.IItemService;
 import lombok.AllArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @AllArgsConstructor
+@FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class ItemServiceImpl implements IItemService {
 
-    private IItemRepository itemRepository;
-
-    private ItemMapper itemMapper = ItemMapper.INSTANCE;
+    IItemRepository itemRepository;
+    ItemMapper itemMapper = ItemMapper.INSTANCE;
 
     @Override
-    public ItemResDto findById(Long id) {
+    public ItemResDTO findById(Long id) {
         Item item = itemRepository.findById(id).orElse(null);
-        return itemMapper.toResDto(item);
+        return itemMapper.toResDTO(item);
     }
 
     @Override
-    public ItemResDto add(ItemReqDto itemReqDto) {
+    public ItemResDTO add(ItemReqDTO itemReqDTO) {
         return null;
     }
 
     @Override
-    public boolean update(Long id, ItemReqDto reqDto) {
+    public boolean update(Long id, ItemReqDTO reqDTO) {
         return false;
     }
 
@@ -42,7 +44,7 @@ public class ItemServiceImpl implements IItemService {
     }
 
     @Override
-    public Page<ListItemResDto> findAllWithSearch(String search, Pageable pageable) {
+    public Page<List<ItemResDTO>> findAllWithSearch(String search, Pageable pageable) {
         return null;
     }
 }

@@ -1,4 +1,4 @@
-package com.example.sourcebase.domain.dto.reqdto;
+package com.example.sourcebase.domain.dto.resdto.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,8 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class ItemReqDto {
-
-    private String name;
-    private String point;
+public class UserRoleResDTO {
+    String role;
 }

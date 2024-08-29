@@ -1,7 +1,7 @@
 package com.example.sourcebase.util;
 
 
-import com.example.sourcebase.domain.dto.resdto.user.UserRoleResDto;
+import com.example.sourcebase.domain.dto.resdto.user.UserRoleResDTO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -21,7 +21,7 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
 
-    public String generateToken(Long id ,String urlImage ,String fullName, String email, String address, String phone, String username, List<UserRoleResDto> roles) {
+    public String generateToken(Long id ,String urlImage ,String fullName, String email, String address, String phone, String username, List<UserRoleResDTO> roles) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
