@@ -1,6 +1,7 @@
 package com.example.sourcebase.domain.dto.resdto.user;
 
 import com.example.sourcebase.domain.enumeration.EGender;
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,8 +20,7 @@ public class UserResDTO {
     String name;
     String email;
     String phoneNumber;
-//    @JsonProperty("dob")
-    LocalDate dob;
+    String dob;
     EGender gender;
     String username;
     String password;

@@ -23,6 +23,7 @@ import org.springframework.stereotype.Service;
 import com.example.sourcebase.exception.AppException;
 
 import java.text.ParseException;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -46,9 +47,7 @@ public class UserService implements IUserService {
         User userNew = userMapper.toUser(registerReqDTO);
 //        saveUserRole(userNew, roleRepository.findById(1L).orElseThrow(() -> new NoSuchElementException("Role not found")));
         User createdUser = userRepository.save(userNew);
-//        createdUser.setDob(createdUser.);
         UserResDTO resultUserResDTO = userMapper.toUserResDTO(createdUser);
-
         return resultUserResDTO;
     }
 
@@ -72,12 +71,10 @@ public class UserService implements IUserService {
             user.setDeleted(true);
             userRepository.save(user);
             return true;
-
         }catch (Exception e){
             System.out.println(e);
         }
         return false;
-
     }
 
     @Override
