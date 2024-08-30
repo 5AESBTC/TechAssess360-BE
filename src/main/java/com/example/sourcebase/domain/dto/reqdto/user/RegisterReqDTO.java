@@ -21,5 +21,4 @@ public class RegisterReqDTO {
     String typeUser;
     String username;
     String password;
-
 }

@@ -27,10 +27,12 @@ import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
+import com.example.sourcebase.exception.AppException;
 
 <<<<<<< HEAD
 import java.text.ParseException;
 import java.util.Date;
+import java.util.UUID;
 
 =======
 >>>>>>> e96da83 (update source base)
@@ -46,6 +48,7 @@ public class UserService implements IUserService {
     IRoleRepository roleRepository;
     IUserRoleRepository userRoleRepository;
     UserMapper userMapper = UserMapper.INSTANCE;
+
     @Override
     public UserResDTO register(RegisterReqDTO registerReqDTO) {
         if (userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(
@@ -62,17 +65,56 @@ public class UserService implements IUserService {
 //        saveUserRole(userNew, roleRepository.findById(1L).orElseThrow(() -> new NoSuchElementException("Role not found")));
         User createdUser = userRepository.save(userNew);
 //        createdUser.setDob(createdUser.);
+<<<<<<< HEAD
         UserResDTO resultUserResDTO= userMapper.toUserResDTO(createdUser);
 <<<<<<< HEAD
+=======
+        UserResDTO resultUserResDTO = userMapper.toUserResDTO(createdUser);
+>>>>>>> 29181f91eab65d5ca609d2bff852822a0eb8f31c
 
 =======
         log.LogInfo(SuccessCode.CREATED);
 >>>>>>> e96da83 (update source base)
         return resultUserResDTO;
     }
+
     @Override
     public String login(UserLoginReqDTO userLogin) {
         return null;
+    }
+
+    @Override
+    public UserResDTO getUserById(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        return userMapper.toUserResDTO(user);
+    }
+
+    @Override
+    public boolean deleteUser(Long id) {
+        try {
+            User user = userRepository.findById(id)
+                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+            user.setDeleted(true);
+            userRepository.save(user);
+            return true;
+
+        }catch (Exception e){
+            System.out.println(e);
+        }
+        return false;
+
+    }
+
+    @Override
+    public UserResDTO updateUser(Long id, RegisterReqDTO request) {
+        User existingUser = userRepository.findById(id)
+                .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        User userToUpdate = userMapper.toUser(request);
+        userToUpdate.setId(id);
+//        userToUpdate.setCreatedBy(existingUser.getCreatedBy());
+        User updatedUser = userRepository.save(userToUpdate);
+        return userMapper.toUserResDTO(updatedUser);
     }
     @Transactional
     public void saveUserRole(User user, Role role) {
