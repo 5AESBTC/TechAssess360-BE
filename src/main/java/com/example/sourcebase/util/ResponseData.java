@@ -22,18 +22,4 @@ public class ResponseData<T> {
     Date timestamp;
     String path;
     String error;
-
-//    public ResponseData(ErrorCode errorCode, Object data) {
-//        this.code = errorCode.getCode();
-//        this.message = errorCode.getMessage();
-//        this.status = errorCode.getHttpStatus().toString();
-//        this.data = data;
-//    }
-//
-//    public ResponseData(ErrorCode errorCode) {
-//        this.code = errorCode.getCode();
-//        this.message = errorCode.getMessage();
-//        this.status = errorCode.getHttpStatus().toString();
-//        this.data = null;
-//    }
 }

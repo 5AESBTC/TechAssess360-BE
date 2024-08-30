@@ -9,7 +9,6 @@ import org.mapstruct.factory.Mappers;
 @Mapper
 public interface ItemMapper {
     ItemMapper INSTANCE = Mappers.getMapper(ItemMapper.class);
-
     Item reqDtoToItem(ItemReqDTO reqDTO);
     ItemResDTO toResDTO(Item item);
 }

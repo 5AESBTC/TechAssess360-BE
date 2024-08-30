@@ -8,12 +8,14 @@ import com.example.sourcebase.util.ErrorCode;
 import com.example.sourcebase.util.ResponseData;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.http.HttpStatus;
+import com.example.sourcebase.util.SuccessCode;
+import lombok.experimental.FieldDefaults;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.UUID;
 
 @RestController
 @AllArgsConstructor
@@ -31,17 +33,20 @@ public class UserRestController {
 //            e.printStackTrace();
 //        }
         return ResponseData.builder().data(userService.register(registerReqDTO))
-                .code(ErrorCode.CREATED.getCode())
-                .message(ErrorCode.CREATED.getMessage())
-                .status(ErrorCode.CREATED.getHttpStatus().name())
+                .code(SuccessCode.CREATED.getCode())
+                .message(SuccessCode.CREATED.getMessage())
+                .status(SuccessCode.CREATED.getHttpStatus().name())
+                .code(SuccessCode.CREATED.getCode())
+                .message(SuccessCode.CREATED.getMessage())
+                .status(SuccessCode.CREATED.getHttpStatus().name())
                 .build();
     }
     @GetMapping("/{id}")
     public ResponseData<?> getUserById(@PathVariable Long id) {
         return ResponseData.builder()
-                .status(ErrorCode.GET_SUCCESSFUL.getHttpStatus().name())
-                .code(ErrorCode.GET_SUCCESSFUL.getCode())
-                .message(ErrorCode.GET_SUCCESSFUL.getMessage())
+                .status(SuccessCode.GET_SUCCESSFUL.getHttpStatus().name())
+                .code(SuccessCode.GET_SUCCESSFUL.getCode())
+                .message(SuccessCode.GET_SUCCESSFUL.getMessage())
                 .data(userService.getUserById(id))
                 .build();
     }
@@ -49,16 +54,16 @@ public class UserRestController {
     public ResponseData<?> deleteUser(@PathVariable Long id) {
         userService.deleteUser(id);
         return ResponseData.builder()
-                .code(ErrorCode.DELETE_SUCCESSFUL.getCode())
-                .message(ErrorCode.DELETE_SUCCESSFUL.getMessage())
+                .code(SuccessCode.DELETE_SUCCESSFUL.getCode())
+                .message(SuccessCode.DELETE_SUCCESSFUL.getMessage())
                 .message("Delete user success")
                 .build();
     }
     @PatchMapping("/{id}")
     public ResponseData<?> updateUser(@PathVariable Long id, @RequestBody RegisterReqDTO request) {
         return ResponseData.builder()
-                .code(ErrorCode.UPDATE_SUCCESSFUL.getCode())
-                .message(ErrorCode.UPDATE_SUCCESSFUL.getMessage())
+                .code(SuccessCode.UPDATE_SUCCESSFUL.getCode())
+                .message(SuccessCode.UPDATE_SUCCESSFUL.getMessage())
                 .data(userService.updateUser(id, request))
                 .build();
     }
