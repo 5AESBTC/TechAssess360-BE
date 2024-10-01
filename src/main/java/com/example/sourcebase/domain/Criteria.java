@@ -6,16 +6,16 @@ import lombok.experimental.FieldDefaults;
 
 
 @Entity
-@Table(name = "items")
+@Table(name = "criterias")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Item {
+public class Criteria {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-    String name;
+    String title;
     int point;
 }

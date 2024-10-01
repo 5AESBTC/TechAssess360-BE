@@ -34,4 +34,9 @@ public class User extends BaseEntity {
     List<UserRole> userRoles;
     boolean isActive;
     boolean isDeleted;
+    @ManyToMany
+    List<Project> projects;
+
+    @ManyToOne
+    Rank rank_id;
 }

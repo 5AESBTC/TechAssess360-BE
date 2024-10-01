@@ -12,11 +12,15 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Questions {
+public class Question {
     @Id
     @GeneratedValue (strategy = GenerationType.IDENTITY)
     Long id;
+
     String title;
+
     int point;
-    
+
+    @ManyToOne
+    Criteria criteria;
 }

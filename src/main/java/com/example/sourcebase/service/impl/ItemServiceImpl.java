@@ -1,6 +1,6 @@
 package com.example.sourcebase.service.impl;
 
-import com.example.sourcebase.domain.Item;
+import com.example.sourcebase.domain.Criteria;
 import com.example.sourcebase.domain.dto.reqdto.ItemReqDTO;
 import com.example.sourcebase.domain.dto.resdto.ItemResDTO;
 import com.example.sourcebase.mapper.ItemMapper;
@@ -24,8 +24,8 @@ public class ItemServiceImpl implements IItemService {
 
     @Override
     public ItemResDTO findById(Long id) {
-        Item item = itemRepository.findById(id).orElse(null);
-        return itemMapper.toResDTO(item);
+        Criteria criteria = itemRepository.findById(id).orElse(null);
+        return itemMapper.toResDTO(criteria);
     }
 
     @Override

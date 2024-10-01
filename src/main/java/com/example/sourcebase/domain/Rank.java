@@ -11,7 +11,7 @@ import lombok.experimental.FieldDefaults;
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Level {
+public class Rank {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
@@ -19,5 +19,5 @@ public class Level {
     @ManyToOne
     Position position;
 
-    String rank;
+    String level;
 }
