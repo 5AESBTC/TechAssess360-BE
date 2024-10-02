@@ -5,7 +5,7 @@ spring:
     activate:
       on-profile: test
   datasource:
-    url: jdbc:mysql://localhost:3306/tech_rate
+    url: jdbc:mysql://localhost:3306/tech_assess360
     username: root
     password: Sol8ight@123./
   jpa:

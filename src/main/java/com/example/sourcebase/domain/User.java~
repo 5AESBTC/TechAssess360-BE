@@ -34,7 +34,7 @@ public class User extends BaseEntity {
     List<UserRole> userRoles;
     boolean isActive;
     boolean isDeleted;
-    @OneToMany(mappedBy = "user" , cascade = CascadeType.REMOVE)
+    @ManyToMany
     List<UserProject> userProjects;
     @ManyToOne
     Rank rank;

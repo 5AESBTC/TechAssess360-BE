@@ -5,19 +5,18 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "ranks")
+@Table(name = "user_projects")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Rank {
+public class UserProject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
-
     @ManyToOne
-    Position position;
-
-    String level;
+    Project project;
+    @ManyToOne
+    User user;
 }

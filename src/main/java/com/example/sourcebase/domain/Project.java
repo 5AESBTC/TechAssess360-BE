@@ -29,6 +29,4 @@ public class Project {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
     LocalDate endDay;
 
-    @ManyToMany
-    List<User> user;
 }
