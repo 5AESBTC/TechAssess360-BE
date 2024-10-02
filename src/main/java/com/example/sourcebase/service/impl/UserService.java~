@@ -50,7 +50,7 @@ public class UserService implements IUserService {
     }
 
     private void saveRank(User user, String positionInput, String level) {
-
+        
             Position position = positionRepository.findByName(positionInput);
         if (position == null) {
             throw new IllegalArgumentException("Position not found");

@@ -38,4 +38,5 @@ public class User extends BaseEntity {
     List<UserProject> userProjects;
     @ManyToOne
     Rank rank;
+
 }

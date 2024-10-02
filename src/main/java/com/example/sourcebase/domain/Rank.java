@@ -20,4 +20,9 @@ public class Rank {
     Position position;
 
     String level;
+
+    public Rank(Position position, String level) {
+        this.position = position;
+        this.level = level;
+    }
 }

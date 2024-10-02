@@ -24,5 +24,4 @@ public class UserResDTO {
     EGender gender;
     String username;
     String password;
-    String typeUser;
 }
