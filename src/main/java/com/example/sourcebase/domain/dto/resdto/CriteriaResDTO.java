@@ -11,8 +11,8 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class ItemResDTO {
+public class CriteriaResDTO {
     Long id;
-    String name;
+    String title;
     int point;
 }
