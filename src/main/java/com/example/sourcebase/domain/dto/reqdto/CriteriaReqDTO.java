@@ -12,7 +12,7 @@ import lombok.experimental.FieldDefaults;
 @NoArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
 //validate
-public class ItemReqDTO {
-    String name;
+public class CriteriaReqDTO {
+    String title;
     String point;
 }
