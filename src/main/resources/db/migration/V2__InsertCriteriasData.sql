@@ -3,12 +3,12 @@ CREATE TABLE answers
     id          BIGINT AUTO_INCREMENT NOT NULL,
     title       VARCHAR(255)          NULL,
     value       INT                   NOT NULL,
-    answer_id BIGINT                NULL,
+    question_id BIGINT                NULL,
     CONSTRAINT pk_answers PRIMARY KEY (id)
 );
 
 ALTER TABLE answers
-    ADD CONSTRAINT FK_ANSWERS_ON_QUESTION FOREIGN KEY (question_id) REFERENCES criterias (id);
+    ADD CONSTRAINT FK_ANSWERS_ON_QUESTION FOREIGN KEY (question_id) REFERENCES questions (id);
 
 INSERT INTO criterias (title, point)
 VALUES ('Hiệu suất công việc', 30),
