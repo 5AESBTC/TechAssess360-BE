@@ -5,16 +5,29 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "assess_details")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role {
+public class AssessDetail {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    String name;
+    @ManyToOne
+    Assess assess;
+
+    @ManyToOne
+    Criteria criteria;
+
+    @ManyToOne
+    Question question;
+
+    int value;
+
+    String description;
+
+    boolean isComment;
 }

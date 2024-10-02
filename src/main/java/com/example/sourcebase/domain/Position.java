@@ -5,13 +5,13 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 @Entity
-@Table(name = "roles")
+@Table(name = "positions")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Role {
+public class Position {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;

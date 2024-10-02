@@ -1,4 +1,4 @@
-CREATE DATABASE IF NOT EXISTS tech_rate;
+CREATE DATABASE IF NOT EXISTS techassess360;
 
 CREATE TABLE users
 (
@@ -41,10 +41,3 @@ ALTER TABLE  user_roles
 ALTER TABLE user_roles
     ADD CONSTRAINT FK_USER_ROLES_ON_USER FOREIGN KEY (user_id) REFERENCES users (id);
 
-CREATE TABLE IF NOT EXISTS items
-(
-    id    BIGINT AUTO_INCREMENT NOT NULL,
-    name  VARCHAR(255)          NULL,
-    point INT                   NOT NULL,
-    CONSTRAINT pk_items PRIMARY KEY (id)
-);
