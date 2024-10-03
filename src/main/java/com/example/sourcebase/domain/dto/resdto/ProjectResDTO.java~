@@ -25,4 +25,3 @@ public class ProjectResDTO {
      @DateTimeFormat(pattern = "dd-MM-yyyy")
      LocalDate endDay;
      private List<UserResDTO> members;
-}
