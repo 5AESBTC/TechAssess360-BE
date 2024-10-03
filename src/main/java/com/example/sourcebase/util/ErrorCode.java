@@ -15,6 +15,7 @@ import javax.tools.Diagnostic;
 public enum ErrorCode {
     USER_NOT_FOUND(404, "User Not Found", HttpStatus.NOT_FOUND),
     ROLE_NOT_FOUND(404, "Role Not Found", HttpStatus.NOT_FOUND),
+    CRITERIA_NOT_FOUND(404, "Criteria Not Found", HttpStatus.NOT_FOUND),
     QUESTION_NOT_FOUND(404, "Question Not Found", HttpStatus.NOT_FOUND),
     USER_NOT_EXISTS(409, "User Not Exists", HttpStatus.CONFLICT),
     ID_NOT_EXISTS(409, "Id Not Exists", HttpStatus.CONFLICT),

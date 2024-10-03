@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IQuestionRepository extends JpaRepository<Question, Long> {
 
-    List<Question> findAllByCriteriaId(Long criteriaId);
+    List<Question> findAllQuestionByCriteriaId(Long criteriaId);
 }

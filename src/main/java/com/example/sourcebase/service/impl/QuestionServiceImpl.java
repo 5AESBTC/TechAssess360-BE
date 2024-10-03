@@ -21,8 +21,8 @@ public class QuestionServiceImpl implements IQuestionService {
     IQuestionRepository questionRepository;
     QuestionMapper questionMapper = QuestionMapper.INSTANCE;
 
-    public List<QuestionResDTO> getAllQuestionsByCriteriaID(Long criteriaId){
-        List<Question> questionResDTOs = questionRepository.findAllByCriteriaId(criteriaId);
+    public List<QuestionResDTO> getAllQuestionByCriteriaID(Long criteriaId){
+        List<Question> questionResDTOs = questionRepository.findAllQuestionByCriteriaId(criteriaId);
         return questionResDTOs.stream()
                 .map(questionMapper::toQuestionResDTO)
                 .collect(Collectors.toList());

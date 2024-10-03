@@ -6,5 +6,5 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 public interface IQuestionService {
-    List<QuestionResDTO> getAllQuestionsByCriteriaID(Long criteriaId);
+    List<QuestionResDTO> getAllQuestionByCriteriaID(Long criteriaId);
 }
