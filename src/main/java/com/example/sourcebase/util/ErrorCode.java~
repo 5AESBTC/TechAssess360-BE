@@ -21,7 +21,6 @@ public enum ErrorCode {
     ILLEGAL_ARGUMENT(409, "Email, Phone or Username Already Exists", HttpStatus.CONFLICT),
     VALIDATION_ERROR(400, "", HttpStatus.BAD_REQUEST),
     USERNAME_EXISTS(409, "Username Exists", HttpStatus.CONFLICT),
-    INVALID_PASSWORD(409, "Invalid Password", HttpStatus.CONFLICT),
     ;
     int code;
     String message;

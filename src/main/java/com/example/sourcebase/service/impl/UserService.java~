@@ -1,6 +1,7 @@
 package com.example.sourcebase.service.impl;
 
 import com.example.sourcebase.domain.*;
+import com.example.sourcebase.domain.dto.resdto.user.UserDetailResDTO;
 import com.example.sourcebase.repository.*;
 import com.example.sourcebase.domain.dto.reqdto.user.RegisterReqDTO;
 import com.example.sourcebase.domain.dto.reqdto.user.UserLoginReqDTO;
@@ -13,6 +14,10 @@ import com.example.sourcebase.util.*;
 import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.sourcebase.exception.AppException;
 
@@ -21,14 +26,28 @@ import java.util.NoSuchElementException;
 @Service
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
-public class UserService implements IUserService {
+public class UserService implements IUserService, UserDetailsService {
     Log log = new Log();
     IUserRepository userRepository;
     IRoleRepository roleRepository;
     IUserRoleRepository userRoleRepository;
+    JwtTokenProvider jwtTokenProvider;
     UserMapper userMapper = UserMapper.INSTANCE;
-    private final IRankRepository rankRepository;
-    private final PositionRepository positionRepository;
+    IRankRepository rankRepository;
+    IPositionRepository positionRepository;
+    PasswordEncoder passwordEncoder;
+
+
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        User user = userRepository.findUserByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User not found with username: " + username));
+
+        var userRoles = user.getUserRoles();
+        var customUserDetails = new CustomUserDetails(user, userRoles);
+        return customUserDetails;
+    }
 
     @Override
     public UserResDTO register(RegisterReqDTO registerReqDTO) {
@@ -50,7 +69,7 @@ public class UserService implements IUserService {
     }
 
     private void saveRank(User user, String positionInput, String level) {
-        
+
             Position position = positionRepository.findByName(positionInput);
         if (position == null) {
             throw new IllegalArgumentException("Position not found");
@@ -64,7 +83,25 @@ public class UserService implements IUserService {
 
     @Override
     public String login(UserLoginReqDTO userLogin) {
-        return null;
+        UserDetails userDetails = loadUserByUsername(userLogin.getUsername());
+
+        if (!passwordEncoder.matches(userLogin.getPassword(), userDetails.getPassword())) {
+            throw new IllegalStateException("Wrong password or username");
+        }
+        UserDetailResDTO userDetailResDto = getUserDetailBy(userLogin.getUsername());
+
+        return jwtTokenProvider.generateToken(userDetailResDto.getId(),
+                userDetailResDto.getName(),
+                userDetailResDto.getEmail(),
+                userDetailResDto.getPhoneNumber(),
+                userDetailResDto.getUsername(),
+                userDetailResDto.getRank(),
+                userDetailResDto.getUserRoles());
+    }
+
+    @Override
+    public UserDetailResDTO getUserDetailBy(String username) {
+        return userMapper.toUserDetailResDTO(userRepository.findUserByUsername(username).orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND)));
     }
 
     @Override
