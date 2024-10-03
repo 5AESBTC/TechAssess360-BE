@@ -31,23 +31,4 @@ public class CriteriaServiceImpl implements ICriteriaService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public CriteriaResDTO add(CriteriaReqDTO itemReqDTO) {
-        return null;
-    }
-
-//    @Override
-//    public boolean update(Long id, ItemReqDTO reqDTO) {
-//        return false;
-//    }
-//
-//    @Override
-//    public boolean deletedById(Long id) {
-//        return false;
-//    }
-//
-//    @Override
-//    public Page<List<ItemResDTO>> findAllWithSearch(String search, Pageable pageable) {
-//        return null;
-//    }
 }

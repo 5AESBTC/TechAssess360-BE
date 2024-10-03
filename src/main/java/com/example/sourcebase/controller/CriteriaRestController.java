@@ -10,12 +10,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/v1/criterias")
+@RequestMapping("/api/criterias")
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class CriteriaRestController {
     ICriteriaService criteriaService;
-    @GetMapping("/")
+    @GetMapping
     public ResponseEntity<ResponseData<?>> getAllCriterias() {
         return ResponseEntity.ok(
                 ResponseData.builder()
@@ -23,11 +23,5 @@ public class CriteriaRestController {
                         .message(SuccessCode.GET_SUCCESSFUL.getMessage())
                         .data(criteriaService.getAllCriterias())
                         .build());
-    }
-
-    @PostMapping
-    //refactor Dto -> DTO
-    public ResponseEntity<?> createItem(@RequestBody CriteriaReqDTO reqDTO) {
-        return ResponseEntity.ok(criteriaService.add(reqDTO));
     }
 }

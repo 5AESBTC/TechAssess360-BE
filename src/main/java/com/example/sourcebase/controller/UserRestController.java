@@ -27,6 +27,17 @@ import java.util.Date;
 public class UserRestController {
     IUserService userService;
 
+    @GetMapping("")
+    public ResponseEntity<ResponseData<?>> getAllUser() {
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.GET_SUCCESSFUL.getCode())
+                        .message(SuccessCode.GET_SUCCESSFUL.getMessage())
+                        .data(userService.getAllUser())
+                        .build()
+        );
+    }
+
     @PostMapping
     public ResponseEntity<ResponseData<?>> register(@RequestBody RegisterReqDTO registerReqDTO) {
         return ResponseEntity.ok(
