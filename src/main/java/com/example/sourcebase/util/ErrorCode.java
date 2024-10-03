@@ -21,7 +21,11 @@ public enum ErrorCode {
     ILLEGAL_ARGUMENT(409, "Email, Phone or Username Already Exists", HttpStatus.CONFLICT),
     VALIDATION_ERROR(400, "", HttpStatus.BAD_REQUEST),
     USERNAME_EXISTS(409, "Username Exists", HttpStatus.CONFLICT),
-    ;
+    PPOJECT_IS_EXIST(410,"Project Exist" ,HttpStatus.CONFLICT ),
+     INVALID_INPUT (411, "Dữ liệu đầu vào không hợp lệ",HttpStatus.CONFLICT),
+    INVALID_START_DATE(412, "Ngày bắt đầu không được sau ngày hiện tại",HttpStatus.CONFLICT),
+    INVALID_END_DATE(413, "Ngày kết thúc phải lớn hơn ngày hiện tại",HttpStatus.CONFLICT),
+    END_DATE_BEFORE_START_DATE(414, "Ngày kết thúc phải sau ngày bắt đầu",HttpStatus.CONFLICT);
     int code;
     String message;
     HttpStatus httpStatus;
