@@ -8,10 +8,7 @@ import com.example.sourcebase.util.SuccessCode;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @AllArgsConstructor
@@ -27,5 +24,14 @@ public class ProjectRestController {
                       .message(SuccessCode.CREATED.getMessage())
                       .data(projectService.addProject(projectRequest))
                       .build());
+    }
+    @GetMapping
+    public ResponseEntity<ResponseData<?>> getAllProject() {
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.GET_SUCCESSFUL.getCode())
+                        .message(SuccessCode.GET_SUCCESSFUL.getMessage())
+                        .data(projectService.getAll())
+                        .build());
     }
 }

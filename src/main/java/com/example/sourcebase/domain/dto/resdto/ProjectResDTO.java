@@ -1,5 +1,6 @@
 package com.example.sourcebase.domain.dto.resdto;
 
+import com.example.sourcebase.domain.dto.resdto.user.UserDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,6 +10,8 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -21,6 +24,7 @@ public class ProjectResDTO {
      LocalDate startDay;
      @DateTimeFormat(pattern = "dd-MM-yyyy")
      LocalDate endDay;
+     private List<UserDTO> members;
 
 
 }
