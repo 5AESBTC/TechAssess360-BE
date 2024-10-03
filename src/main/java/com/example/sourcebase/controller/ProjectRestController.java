@@ -25,6 +25,7 @@ public class ProjectRestController {
                       .data(projectService.addProject(projectRequest))
                       .build());
     }
+
     @GetMapping
     public ResponseEntity<ResponseData<?>> getAllProject() {
         return ResponseEntity.ok(
