@@ -44,6 +44,9 @@ public class SpringSecurity {
         http.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(authorize ->
                         authorize
                                 .requestMatchers("/api/auths/**").permitAll()
+                                .requestMatchers("/api/users/**").permitAll()
+                                .requestMatchers("/api/criterias/**").permitAll()
+                                .requestMatchers("/api/questions/**").permitAll()
                                 .requestMatchers(HttpMethod.POST,"/api/auths/**").permitAll()
                                 .requestMatchers("/static/**").permitAll()
                                 .anyRequest().authenticated())

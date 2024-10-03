@@ -7,8 +7,12 @@ import com.example.sourcebase.domain.dto.resdto.user.UserResDTO;
 import com.example.sourcebase.util.ResponseData;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 public interface IUserService {
+    List<UserResDTO> getAllUser();
+
+
     UserResDTO register(RegisterReqDTO userNew);
     String login(UserLoginReqDTO userLogin);
     UserDetailResDTO getUserDetailBy(String username);
@@ -18,4 +22,5 @@ public interface IUserService {
     boolean deleteUser(Long id);
 
     UserResDTO updateUser(Long id, RegisterReqDTO request);
+
 }
