@@ -1,6 +1,6 @@
 package com.example.sourcebase.domain;
 
-import com.example.sourcebase.domain.enumeration.ETypeSubmit;
+import com.example.sourcebase.domain.enumeration.ETypeAssess;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.*;
@@ -30,7 +30,8 @@ public class Assess {
     LocalDate assessmentDate;
 
     @Enumerated(EnumType.STRING)
-    ETypeSubmit assessmentType;
+    ETypeAssess assessmentType;
 
     int totalPoint;
+
 }

@@ -1,14 +1,14 @@
 package com.example.sourcebase.domain.dto.resdto.user;
 
+import com.example.sourcebase.domain.Rank;
 import com.example.sourcebase.domain.enumeration.EGender;
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -24,4 +24,6 @@ public class UserResDTO {
     EGender gender;
     String username;
     String password;
+    Rank rank;
+    List<UserRoleResDTO> userRoles;
 }
