@@ -23,6 +23,7 @@ public class QuestionServiceImpl implements IQuestionService {
 
     public List<QuestionResDTO> getAllQuestionByCriteriaID(Long criteriaId){
         List<Question> questionResDTOs = questionRepository.findAllQuestionByCriteriaId(criteriaId);
+
         return questionResDTOs.stream()
                 .map(questionMapper::toQuestionResDTO)
                 .collect(Collectors.toList());

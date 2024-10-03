@@ -1,6 +1,5 @@
 package com.example.sourcebase.controller;
 
-import com.example.sourcebase.domain.Question;
 import com.example.sourcebase.domain.dto.resdto.QuestionResDTO;
 import com.example.sourcebase.service.IQuestionService;
 import com.example.sourcebase.util.ErrorCode;
