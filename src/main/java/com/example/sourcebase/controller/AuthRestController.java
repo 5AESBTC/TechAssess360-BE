@@ -1,5 +1,6 @@
 package com.example.sourcebase.controller;
 
+import com.example.sourcebase.domain.dto.reqdto.user.RegisterReqDTO;
 import com.example.sourcebase.domain.dto.reqdto.user.UserLoginReqDTO;
 import com.example.sourcebase.service.IUserService;
 import com.example.sourcebase.util.ResponseData;
@@ -27,4 +28,15 @@ public class AuthRestController {
                         .build()
         );
     }
+    @PostMapping("/register")
+    public ResponseEntity<ResponseData<?>> register(@RequestBody RegisterReqDTO registerReqDTO) {
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.CREATED.getCode())
+                        .message(SuccessCode.CREATED.getMessage())
+                        .data(userService.register(registerReqDTO))
+                        .build()
+        );
+    }
+
 }
