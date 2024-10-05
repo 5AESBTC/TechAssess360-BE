@@ -6,16 +6,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.util.List;
-
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-@FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class CriteriaResDTO {
+@AllArgsConstructor
+public class AnswerResDTO {
     Long id;
     String title;
-    int point;
-    List<QuestionResDTO> questions;
+    int value;
 }
