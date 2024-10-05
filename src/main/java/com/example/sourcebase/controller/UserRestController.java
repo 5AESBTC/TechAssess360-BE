@@ -77,7 +77,7 @@ public class UserRestController {
                         .build());
     }
 
-    @GetMapping("/same-project/{userId}")
+    @GetMapping("/{userId}/same-project")
     public ResponseEntity<ResponseData<?>> getAllUserHadSameProject(@PathVariable Long userId){
         List<UserResDTO> usersHadSameProject = userService.getAllUserHadSameProject(userId);
 
