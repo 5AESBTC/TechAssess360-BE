@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import com.example.sourcebase.util.SuccessCode;
 import lombok.experimental.FieldDefaults;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
+import java.util.List;
 
 
 @RestController
@@ -74,4 +76,27 @@ public class UserRestController {
                         .data(userService.updateUser(id, request))
                         .build());
     }
+
+    @GetMapping("/same-project/{userId}")
+    public ResponseEntity<ResponseData<?>> getAllUserHadSameProject(@PathVariable Long userId){
+        List<UserResDTO> usersHadSameProject = userService.getAllUserHadSameProject(userId);
+
+        if(usersHadSameProject.isEmpty()) {
+            return ResponseEntity.status(ErrorCode.USER_NOT_FOUND.getHttpStatus()).body(
+                    ResponseData.builder()
+                            .code(ErrorCode.USER_NOT_FOUND.getCode())
+                            .message(ErrorCode.USER_NOT_FOUND.getMessage())
+                            .build()
+            );
+        }
+
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.GET_SUCCESSFUL.getCode())
+                        .message(SuccessCode.GET_SUCCESSFUL.getMessage())
+                        .data(usersHadSameProject)
+                        .build()
+        );
+    }
+
 }
