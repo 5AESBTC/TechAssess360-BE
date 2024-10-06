@@ -1,6 +1,5 @@
 package com.example.sourcebase.controller;
 
-import com.example.sourcebase.domain.dto.reqdto.CriteriaReqDTO;
 import com.example.sourcebase.service.ICriteriaService;
 import com.example.sourcebase.util.ResponseData;
 import com.example.sourcebase.util.SuccessCode;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 public class CriteriaRestController {
     ICriteriaService criteriaService;
     @GetMapping
-    public ResponseEntity<ResponseData<?>> getAllCriterias() {
+    public ResponseEntity<ResponseData<?>> getListCriteria() {
         return ResponseEntity.ok(
                 ResponseData.builder()
                         .code(SuccessCode.GET_SUCCESSFUL.getCode())

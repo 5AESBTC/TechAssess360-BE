@@ -8,10 +8,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/assess")
@@ -20,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AssessRestController {
     IAssessService assessService;
     @PostMapping("/save-assess")
+    @CrossOrigin
     public ResponseEntity<ResponseData<?>> saveAssess(@RequestBody AssessReqDTO assessReqDto) {
         return ResponseEntity.ok(
                 ResponseData.builder()
@@ -29,5 +27,4 @@ public class AssessRestController {
                         .build()
         );
     }
-
 }

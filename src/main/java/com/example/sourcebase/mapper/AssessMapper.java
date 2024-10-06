@@ -2,7 +2,7 @@ package com.example.sourcebase.mapper;
 
 import com.example.sourcebase.domain.Assess;
 import com.example.sourcebase.domain.dto.reqdto.AssessReqDTO;
-import com.example.sourcebase.domain.dto.resdto.AssessResDto;
+import com.example.sourcebase.domain.dto.resdto.AssessResDTO;
 import org.mapstruct.Mapper;
 import org.mapstruct.factory.Mappers;
 
@@ -10,7 +10,7 @@ import org.mapstruct.factory.Mappers;
 public interface AssessMapper {
     AssessMapper INSTANCE = Mappers.getMapper(AssessMapper.class);
 
-    AssessResDto toAssessResDto(Assess assess);
+    AssessResDTO toAssessResDto(Assess assess);
 
     Assess toAssess(AssessReqDTO assessReqDto);
 }
