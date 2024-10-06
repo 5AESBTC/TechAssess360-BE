@@ -20,6 +20,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.sourcebase.exception.AppException;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -58,7 +59,6 @@ public class UserService implements IUserService, UserDetailsService {
                 registerReqDTO.getUsername(),
                 registerReqDTO.getPhoneNumber())) {
             log.LogError(ErrorCode.USERNAME_EXISTS);
-            throw new IllegalArgumentException("User with given email, username, or phone number already exists.");
         }
         registerReqDTO.setPassword(passwordEncoder.encode(registerReqDTO.getPassword()));
         User userNew = userMapper.toUser(registerReqDTO);
@@ -88,9 +88,9 @@ public class UserService implements IUserService, UserDetailsService {
     public String login(UserLoginReqDTO userLogin) {
         UserDetails userDetails = loadUserByUsername(userLogin.username());
 
-//        if (!passwordEncoder.matches(userLogin.password(), userDetails.getPassword())) {
-//            throw new IllegalStateException("Wrong password or username");
-//        }
+        if (!passwordEncoder.matches(userLogin.password(), userDetails.getPassword())) {
+            throw new IllegalStateException("Wrong password or username");
+        }
         UserDetailResDTO userDetailResDto = getUserDetailBy(userLogin.username());
 
         return jwtTokenProvider.generateToken(userDetailResDto.getId(),
@@ -148,5 +148,12 @@ public class UserService implements IUserService, UserDetailsService {
     public void saveUserRole(User user, Role role) {
         UserRole userRole = new UserRole(user, role);
         userRoleRepository.save(userRole);
+    }
+
+    @Override
+    public List<UserResDTO> getAllUserHadSameProject(Long userId) {
+        List<User> userList = userRepository.getAllUserHadSameProject(userId);
+
+        return userList.stream().map(userMapper::toUserResDTO).collect(Collectors.toList());
     }
 }

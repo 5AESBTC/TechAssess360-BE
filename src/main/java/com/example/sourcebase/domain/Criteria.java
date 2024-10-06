@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 
 @Entity
 @Table(name = "criterias")
@@ -18,4 +20,6 @@ public class Criteria {
     Long id;
     String title;
     int point;
+    @OneToMany(mappedBy = "criteria", fetch = FetchType.LAZY)
+    List<Question> questions;
 }
