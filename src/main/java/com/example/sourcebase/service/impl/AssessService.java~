@@ -48,6 +48,8 @@ public class AssessService implements IAssessService {
         assess.setAssessmentType(type);
         assess.setAssessmentDate(LocalDate.now());
         assessRepository.save(assess);
+        // save assess detail
+
         assessReqDto.getAssessDetails().forEach(item -> {
             item.setAssessId(String.valueOf(assess.getId()));
             assessDetailRepository.save(assessDetailMapper.toAssessDetail(item));
