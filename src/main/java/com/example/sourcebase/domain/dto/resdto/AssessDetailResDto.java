@@ -16,8 +16,8 @@ import lombok.experimental.FieldDefaults;
 public class AssessDetailResDto {
     Long id;
     Long assessId;
-    Criteria criteria;
-    Question question;
+    CriteriaResDTO criteria;
+    QuestionResDTO question;
     int value;
     String description;
     boolean isComment;

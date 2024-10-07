@@ -18,4 +18,9 @@ public class QuestionResDTO {
     String title;
     int point;
     List<AnswerResDTO> answers;
+
+    public QuestionResDTO(Long id, String title) {
+        this.id = id;
+        this.title = title;
+    }
 }

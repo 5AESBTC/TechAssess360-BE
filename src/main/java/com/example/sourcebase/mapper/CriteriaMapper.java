@@ -15,7 +15,5 @@ public interface CriteriaMapper {
     CriteriaMapper INSTANCE = Mappers.getMapper(CriteriaMapper.class);
     Criteria reqDtoToItem(CriteriaReqDTO reqDTO);
     CriteriaResDTO toCriteriaResDTO(Criteria criteria);
-    QuestionResDTO toQuestionResDTO(Question question);
-
     AnswerResDTO toAnswerResDTO(Answer answer);
 }

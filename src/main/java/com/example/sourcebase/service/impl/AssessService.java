@@ -4,7 +4,11 @@ import com.example.sourcebase.domain.Assess;
 import com.example.sourcebase.domain.AssessDetail;
 import com.example.sourcebase.domain.User;
 import com.example.sourcebase.domain.dto.resdto.AssessDetailResDto;
+import com.example.sourcebase.domain.dto.resdto.CriteriaResDTO;
+import com.example.sourcebase.domain.dto.resdto.QuestionResDTO;
 import com.example.sourcebase.mapper.AssessDetailMapper;
+import com.example.sourcebase.mapper.CriteriaMapper;
+import com.example.sourcebase.mapper.QuestionMapper;
 import com.example.sourcebase.repository.*;
 import com.example.sourcebase.mapper.AssessMapper;
 import com.example.sourcebase.domain.dto.reqdto.AssessReqDTO;
@@ -19,7 +23,9 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,6 +36,8 @@ import java.util.stream.Collectors;
 public class AssessService implements IAssessService {
     AssessMapper assessMapper = AssessMapper.INSTANCE;
     AssessDetailMapper assessDetailMapper = AssessDetailMapper.INSTANCE;
+    CriteriaMapper criteriaResMapper = CriteriaMapper.INSTANCE;
+    QuestionMapper questionResMapper = QuestionMapper.INSTANCE;
     IAssessRepository assessRepository;
     IUserRepository userRepository;
     IAssessDetailRepository assessDetailRepository;
@@ -41,7 +49,7 @@ public class AssessService implements IAssessService {
         ETypeAssess type = null;
         if (assessReqDto.getUserId().equals(assessReqDto.getToUserId())) {
             type = ETypeAssess.SELF;
-        } else if(userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get().getUserRoles().equals("MANAGER")) {
+        } else if (userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get().getUserRoles().equals("MANAGER")) {
             type = ETypeAssess.MANAGER;
         } else {
             type = ETypeAssess.TEAM;
@@ -57,12 +65,12 @@ public class AssessService implements IAssessService {
         assessReqDto.getAssessDetails().forEach(item -> {
             AssessDetail assessDetail = assessDetailMapper.toAssessDetail(item);
             assessDetail.setAssess(assess);
-            if (item.getCriteriaId().equals("6")|| item.getCriteriaId().equals("7") || item.getCriteriaId().equals("8")) {
+            if (item.getCriteriaId().equals("6") || item.getCriteriaId().equals("7") || item.getCriteriaId().equals("8")) {
                 assessDetail.setComment(true);
             }
             if (item.getQuestionId() != null) {
                 assessDetail.setQuestion(questionRepository.findById(Long.valueOf(item.getQuestionId())).get());
-            }else {
+            } else {
                 assessDetail.setQuestion(null);
             }
             assessDetail.setCriteria(criteriaRepository.findById(Long.valueOf(item.getCriteriaId())).get());
@@ -71,18 +79,19 @@ public class AssessService implements IAssessService {
         return assessMapper.toAssessResDto(assess);
     }
 
-    @Transactional
     @Override
     public List<AssessResDTO> getListAssessByUserId(Long userId) {
-        List<Assess> listAssess = assessRepository.getListAssessByUserId(userId);
-        return listAssess.stream().map(assess -> {
-            List<AssessDetail> assessDetails = assessDetailRepository.findByAssessId(assess.getId());
-            List<AssessDetailResDto> assessDetailResDtos = assessDetails.stream().map(assessDetailMapper::toAssessDetailResDto).collect(Collectors.toList());
-            AssessResDTO assessResDTO = assessMapper.toAssessResDto(assess);
-            assessResDTO.setAssessDetails(assessDetailResDtos);
-            return assessResDTO;
-        }).collect(Collectors.toList());
+        return assessRepository.getListAssessByUserId(userId).stream()
+                .map(assess -> {
+                    AssessResDTO assessResDTO = assessMapper.toAssessResDto(assess);
+                    assessResDTO.setAssessDetails(assessResDTO.getAssessDetails().stream()
+                            .peek(assessDetail -> assessDetail.setAssessId(assessResDTO.getId()))
+                            .collect(Collectors.toList()));
+                    return assessResDTO;
+                })
+                .collect(Collectors.toList());
     }
+
 
     @Override
     public boolean isSubmitForm(Long userId, Long toUserId) {

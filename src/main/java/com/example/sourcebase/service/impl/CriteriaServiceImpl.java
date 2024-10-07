@@ -6,6 +6,7 @@ import com.example.sourcebase.domain.dto.resdto.AnswerResDTO;
 import com.example.sourcebase.domain.dto.resdto.CriteriaResDTO;
 import com.example.sourcebase.domain.dto.resdto.QuestionResDTO;
 import com.example.sourcebase.mapper.CriteriaMapper;
+import com.example.sourcebase.mapper.QuestionMapper;
 import com.example.sourcebase.repository.ICriteriaRepository;
 import com.example.sourcebase.service.ICriteriaService;
 import lombok.AllArgsConstructor;
@@ -23,6 +24,7 @@ public class CriteriaServiceImpl implements ICriteriaService {
 
     ICriteriaRepository criteriaRepository;
     CriteriaMapper criteriaMapper = CriteriaMapper.INSTANCE;
+    QuestionMapper questionMapper = QuestionMapper.INSTANCE;
 
     @Override
     public List<CriteriaResDTO> getAllCriterias() {
@@ -35,7 +37,7 @@ public class CriteriaServiceImpl implements ICriteriaService {
                     if (criteria.getQuestions() != null && !criteria.getQuestions().isEmpty()) {
                         List<QuestionResDTO> questionResDTOs = criteria.getQuestions().stream()
                                 .map(question -> {
-                                    QuestionResDTO questionResDTO = criteriaMapper.toQuestionResDTO(question);
+                                    QuestionResDTO questionResDTO = questionMapper.toQuestionResDTO(question);
 
                                     // Mapping answers nếu có câu trả lời
                                     if (question.getAnswers() != null && !question.getAnswers().isEmpty()) {
