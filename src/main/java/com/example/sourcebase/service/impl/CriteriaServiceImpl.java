@@ -21,38 +21,45 @@ import java.util.stream.Collectors;
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
 public class CriteriaServiceImpl implements ICriteriaService {
 
-    @Autowired
     ICriteriaRepository criteriaRepository;
     CriteriaMapper criteriaMapper = CriteriaMapper.INSTANCE;
 
     @Override
     public List<CriteriaResDTO> getAllCriterias() {
-        List<Criteria> criteriaResDTOS = criteriaRepository.findAll();
-        return criteriaResDTOS.stream()
-                .map(
-                        criteria -> {
-                            CriteriaResDTO criteriaResDTO = criteriaMapper.toCriteriaResDTO(criteria);
+        List<Criteria> listCriteria = criteriaRepository.findAll();
+        List<CriteriaResDTO> criteriaResDTOs = listCriteria.stream()
+                .map(criteria -> {
+                    CriteriaResDTO criteriaResDTO = criteriaMapper.toCriteriaResDTO(criteria);
 
-                            // Mapping questions
-                            List<QuestionResDTO> questionResDTOs = criteria.getQuestions().stream()
-                                    .map(question -> {
-                                        QuestionResDTO questionResDTO = criteriaMapper.toQuestionResDTO(question);
+                    // Mapping questions nếu có câu hỏi
+                    if (criteria.getQuestions() != null && !criteria.getQuestions().isEmpty()) {
+                        List<QuestionResDTO> questionResDTOs = criteria.getQuestions().stream()
+                                .map(question -> {
+                                    QuestionResDTO questionResDTO = criteriaMapper.toQuestionResDTO(question);
 
-                                        // Mapping answers
+                                    // Mapping answers nếu có câu trả lời
+                                    if (question.getAnswers() != null && !question.getAnswers().isEmpty()) {
                                         List<AnswerResDTO> answerResDTOs = question.getAnswers().stream()
                                                 .map(criteriaMapper::toAnswerResDTO)
                                                 .collect(Collectors.toList());
-
                                         questionResDTO.setAnswers(answerResDTOs);
-                                        return questionResDTO;
-                                    })
-                                    .collect(Collectors.toList());
+                                    } else {
+                                        questionResDTO.setAnswers(null); // Không có câu trả lời
+                                    }
 
-                            criteriaResDTO.setQuestions(questionResDTOs);
-                            return criteriaResDTO;
-                        }
-                )
+                                    return questionResDTO;
+                                })
+                                .collect(Collectors.toList());
+                        criteriaResDTO.setQuestions(questionResDTOs);
+                    } else {
+                        criteriaResDTO.setQuestions(null); // Không có câu hỏi
+                    }
+
+                    return criteriaResDTO;
+                })
                 .collect(Collectors.toList());
+        return criteriaResDTOs;
     }
+
 
 }

@@ -16,9 +16,9 @@ VALUES ('Hiệu suất công việc', 30),
        ('Tinh thần làm việc và thái độ', 20),
        ('Đóng góp và sáng kiến', 15),
        ('Quy định và chính sách', 15),
-       ('Đóng góp cá nhân và kết quả', null),
-       ('Mục tiêu quý tiếp theo', null),
-       ('Đánh giá của quản lý', null);
+       ('Đóng góp cá nhân và kết quả', 0),
+       ('Mục tiêu quý tiếp theo', 0),
+       ('Đánh giá của quản lý', 0);
 
 INSERT INTO questions (title, point, criteria_id)
 VALUES ('Mức độ hoàn thành mục tiêu công việc được giao trong thời gian qua?', 15, 1),
