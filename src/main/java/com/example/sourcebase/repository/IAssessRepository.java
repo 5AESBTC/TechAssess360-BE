@@ -10,7 +10,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface IAssessRepository extends JpaRepository<Assess, Long> {
-    @Query("SELECT a FROM Assess a WHERE a.toUser = :user AND EXISTS (SELECT up FROM UserProject up WHERE up.user = a.toUser AND up.project = :project)")
+    @Query("SELECT a FROM Assess a INNER JOIN UserProject up ON a.toUser = up.user WHERE a.toUser = :user AND up.project = :project")
     List<Assess> findByToUserAndProject(@Param("user") User user, @Param("project") Project project);
 
 }

@@ -5,6 +5,6 @@ import com.example.sourcebase.domain.dto.resdto.UserProjectAssessmentResponseDTO
 import org.springframework.stereotype.Service;
 
 @Service
-public interface IAssessmentService {
+public interface IAssessResultService {
     UserProjectAssessmentResponseDTO getUserProjectAssessments(UserProjectAssessmentRequestDTO requestDTO);
 }

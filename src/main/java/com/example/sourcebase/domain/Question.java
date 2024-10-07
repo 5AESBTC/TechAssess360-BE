@@ -24,6 +24,7 @@ public class Question {
     int point;
 
     @ManyToOne
+            
     Criteria criteria;
 
     @OneToMany(mappedBy = "question", fetch = FetchType.LAZY)

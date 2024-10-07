@@ -10,9 +10,9 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
-public interface AssessmentMapper {
+public interface AssessResultMapper {
     @Mapping(target = "assessor", source = "user")
-    @Mapping(target = "assessmentType", source = "assess.assessmentType")
+    @Mapping(target = "assessmentType", source = "assessmentType")
     ProjectAssessmentResDTO assessToProjectAssessmentDTO(Assess assess);
 
     UserResDTO userToAssessorDTO(User user);

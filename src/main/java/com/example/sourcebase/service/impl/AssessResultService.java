@@ -7,13 +7,13 @@ import com.example.sourcebase.domain.User;
 import com.example.sourcebase.domain.dto.reqdto.UserProjectAssessmentRequestDTO;
 import com.example.sourcebase.domain.dto.resdto.ProjectAssessmentResDTO;
 import com.example.sourcebase.domain.dto.resdto.UserProjectAssessmentResponseDTO;
-import com.example.sourcebase.exception.AppException;
-import com.example.sourcebase.mapper.AssessmentMapper;
+import com.example.sourcebase.mapper.AssessResultMapper;
 import com.example.sourcebase.repository.IAssessDetailRepository;
 import com.example.sourcebase.repository.IAssessRepository;
 import com.example.sourcebase.repository.IProjectRepository;
 import com.example.sourcebase.repository.IUserRepository;
-import com.example.sourcebase.service.IAssessmentService;
+import com.example.sourcebase.service.IAssessResultService;
+import com.example.sourcebase.util.AppException;
 import com.example.sourcebase.util.ErrorCode;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
@@ -25,7 +25,7 @@ import java.util.stream.Collectors;
 @Service
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
-public class AssessmentService implements IAssessmentService {
+public class AssessResultService implements IAssessResultService {
 
      IAssessRepository assessRepository;
 
@@ -37,7 +37,7 @@ public class AssessmentService implements IAssessmentService {
      IProjectRepository projectRepository;
 
 
-     AssessmentMapper assessmentMapper;
+     AssessResultMapper assessResultMapper;
 
     public UserProjectAssessmentResponseDTO getUserProjectAssessments(UserProjectAssessmentRequestDTO requestDTO) {
         User user = userRepository.findById(requestDTO.getUserId())
@@ -63,10 +63,10 @@ public class AssessmentService implements IAssessmentService {
     }
 
     private ProjectAssessmentResDTO convertToProjectAssessmentDTO(Assess assess) {
-        ProjectAssessmentResDTO dto = assessmentMapper.assessToProjectAssessmentDTO(assess);
+        ProjectAssessmentResDTO dto = assessResultMapper.assessToProjectAssessmentDTO(assess);
         List<AssessDetail> details = assessDetailRepository.findByAssess(assess);
         dto.setDetails(details.stream()
-                .map(assessmentMapper::assessDetailToAssessmentDetailDTO)
+                .map(assessResultMapper::assessDetailToAssessmentDetailDTO)
                 .collect(Collectors.toList()));
         return dto;
     }

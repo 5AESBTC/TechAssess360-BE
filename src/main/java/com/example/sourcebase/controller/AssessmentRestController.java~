@@ -8,7 +8,10 @@ import com.example.sourcebase.util.SuccessCode;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/assessments")
@@ -18,18 +21,5 @@ public class AssessmentRestController {
 
      IAssessmentService assessmentService;
 
-    @GetMapping("/user-project")
-    public ResponseEntity<ResponseData<?>> getUserProjectAssessments(
-            @RequestBody Long userId,
-            @RequestBody Long projectId) {
-        UserProjectAssessmentRequestDTO requestDTO = new UserProjectAssessmentRequestDTO();
-        requestDTO.setUserId(userId);
-        requestDTO.setProjectId(projectId);
-        UserProjectAssessmentResponseDTO responseDTO = assessmentService.getUserProjectAssessments(requestDTO);
-        return ResponseEntity.ok( ResponseData.builder()
-                .code(SuccessCode.GET_SUCCESSFUL.getCode())
-                .message(SuccessCode.GET_SUCCESSFUL.getMessage())
-                .data(responseDTO)
-                .build());
-    }
+
 }

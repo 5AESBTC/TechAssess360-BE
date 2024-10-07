@@ -13,7 +13,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE)
-public class AssessResDto {
+public class AssessResDTO {
     Long id;
     Long userId;
     Long toUserId;
