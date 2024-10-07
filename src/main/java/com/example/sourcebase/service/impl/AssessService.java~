@@ -1,14 +1,15 @@
 package com.example.sourcebase.service.impl;
 
 import com.example.sourcebase.domain.Assess;
-import com.example.sourcebase.domain.AssessDetail;
-import com.example.sourcebase.domain.User;
 import com.example.sourcebase.mapper.AssessDetailMapper;
-import com.example.sourcebase.repository.*;
+import com.example.sourcebase.repository.CriteriaRepository;
+import com.example.sourcebase.repository.IAssessDetailRepository;
 import com.example.sourcebase.mapper.AssessMapper;
+import com.example.sourcebase.repository.IAssessRepository;
 import com.example.sourcebase.domain.dto.reqdto.AssessReqDTO;
-import com.example.sourcebase.domain.dto.resdto.AssessResDTO;
+import com.example.sourcebase.domain.dto.resdto.AssessResDto;
 import com.example.sourcebase.domain.enumeration.ETypeAssess;
+import com.example.sourcebase.repository.IUserRepository;
 import com.example.sourcebase.service.IAssessService;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -30,11 +31,10 @@ public class AssessService implements IAssessService {
     IAssessRepository assessRepository;
     IUserRepository userRepository;
     IAssessDetailRepository assessDetailRepository;
-    ICriteriaRepository criteriaRepository;
-    IQuestionRepository questionRepository;
+    private final CriteriaRepository criteriaRepository;
 
     @Override
-    public AssessResDTO updateAssess(AssessReqDTO assessReqDto) {
+    public AssessResDto updateAssess(AssessReqDTO assessReqDto) {
         ETypeAssess type = null;
         if (assessReqDto.getUserId().equals(assessReqDto.getToUserId())) {
             type = ETypeAssess.SELF;
@@ -43,35 +43,22 @@ public class AssessService implements IAssessService {
         } else {
             type = ETypeAssess.TEAM;
         }
-        User userReview = userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get();
-        User toUser = userRepository.findById(Long.valueOf(assessReqDto.getToUserId())).get();
+
         Assess assess = assessMapper.toAssess(assessReqDto);
-        assess.setUser(userReview);
-        assess.setToUser(toUser);
         assess.setAssessmentType(type);
         assess.setAssessmentDate(LocalDate.now());
         assessRepository.save(assess);
+        // save assess detail
+
         assessReqDto.getAssessDetails().forEach(item -> {
-            AssessDetail assessDetail = assessDetailMapper.toAssessDetail(item);
-            assessDetail.setAssess(assess);
-            if (item.getCriteriaId().equals("6")|| item.getCriteriaId().equals("7") || item.getCriteriaId().equals("8")) {
-                assessDetail.setComment(true);
-            }
-            if (item.getQuestionId() != null) {
-                assessDetail.setQuestion(questionRepository.findById(Long.valueOf(item.getQuestionId())).get());
-            }else {
-                assessDetail.setQuestion(null);
-            }
-            assessDetail.setCriteria(criteriaRepository.findById(Long.valueOf(item.getCriteriaId())).get());
-            assessDetailRepository.save(assessDetail);
+            item.setAssessId(String.valueOf(assess.getId()));
+            assessDetailRepository.save(assessDetailMapper.toAssessDetail(item));
         });
         return assessMapper.toAssessResDto(assess);
     }
 
     @Override
-    public List<AssessResDTO> getAssessByUserId(String userId) {
-        return List.of();
+    public List<AssessResDto> getAssessByUserId(String userId) {
+        return null;
     }
-
-
 }

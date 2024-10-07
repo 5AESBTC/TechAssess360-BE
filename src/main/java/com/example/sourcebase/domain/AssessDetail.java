@@ -16,7 +16,7 @@ public class AssessDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.REMOVE)
     Assess assess;
 
     @ManyToOne
