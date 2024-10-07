@@ -131,7 +131,7 @@ CREATE TABLE assess_details
     criteria_id   BIGINT                NULL,
     question_id   BIGINT                NULL,
     value         INT                   NULL,
-    `description` VARCHAR(255)          NULL,
+    `description` VARCHAR(255)          NOT NULL ,
     is_comment    BIT(1)                NOT NULL,
     CONSTRAINT pk_assess_details PRIMARY KEY (id)
 );
