@@ -7,6 +7,7 @@ import java.util.List;
 
 public interface IAssessService {
     AssessResDTO updateAssess(AssessReqDTO assessReqDto);
-    List<AssessResDTO> getAssessByUserId(String userId);
+    List<AssessResDTO> getListAssessByUserId(Long userId);
 
+    boolean isSubmitForm(Long userId, Long toUserId);
 }

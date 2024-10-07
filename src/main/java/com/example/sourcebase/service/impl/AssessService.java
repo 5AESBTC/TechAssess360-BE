@@ -3,6 +3,7 @@ package com.example.sourcebase.service.impl;
 import com.example.sourcebase.domain.Assess;
 import com.example.sourcebase.domain.AssessDetail;
 import com.example.sourcebase.domain.User;
+import com.example.sourcebase.domain.dto.resdto.AssessDetailResDto;
 import com.example.sourcebase.mapper.AssessDetailMapper;
 import com.example.sourcebase.repository.*;
 import com.example.sourcebase.mapper.AssessMapper;
@@ -10,6 +11,7 @@ import com.example.sourcebase.domain.dto.reqdto.AssessReqDTO;
 import com.example.sourcebase.domain.dto.resdto.AssessResDTO;
 import com.example.sourcebase.domain.enumeration.ETypeAssess;
 import com.example.sourcebase.service.IAssessService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
@@ -18,6 +20,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -68,10 +71,21 @@ public class AssessService implements IAssessService {
         return assessMapper.toAssessResDto(assess);
     }
 
+    @Transactional
     @Override
-    public List<AssessResDTO> getAssessByUserId(String userId) {
-        return List.of();
+    public List<AssessResDTO> getListAssessByUserId(Long userId) {
+        List<Assess> listAssess = assessRepository.getListAssessByUserId(userId);
+        return listAssess.stream().map(assess -> {
+            List<AssessDetail> assessDetails = assessDetailRepository.findByAssessId(assess.getId());
+            List<AssessDetailResDto> assessDetailResDtos = assessDetails.stream().map(assessDetailMapper::toAssessDetailResDto).collect(Collectors.toList());
+            AssessResDTO assessResDTO = assessMapper.toAssessResDto(assess);
+            assessResDTO.setAssessDetails(assessDetailResDtos);
+            return assessResDTO;
+        }).collect(Collectors.toList());
     }
 
-
+    @Override
+    public boolean isSubmitForm(Long userId, Long toUserId) {
+        return false;
+    }
 }
