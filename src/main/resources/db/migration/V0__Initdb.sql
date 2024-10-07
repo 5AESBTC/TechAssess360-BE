@@ -89,7 +89,7 @@ CREATE TABLE criterias
 (
     id    BIGINT AUTO_INCREMENT NOT NULL,
     title VARCHAR(255)          NULL,
-    point INT                   NOT NULL,
+    point INT                   NULL,
     CONSTRAINT pk_criteria PRIMARY KEY (id)
 );
 
@@ -130,7 +130,7 @@ CREATE TABLE assess_details
     assess_id     BIGINT                NULL,
     criteria_id   BIGINT                NULL,
     question_id   BIGINT                NULL,
-    value         INT                   NOT NULL,
+    value         INT                   NULL,
     `description` VARCHAR(255)          NULL,
     is_comment    BIT(1)                NOT NULL,
     CONSTRAINT pk_assess_details PRIMARY KEY (id)

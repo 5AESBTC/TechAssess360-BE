@@ -15,7 +15,10 @@ VALUES ('Hiệu suất công việc', 30),
        ('Kỹ năng và kiến thức', 20),
        ('Tinh thần làm việc và thái độ', 20),
        ('Đóng góp và sáng kiến', 15),
-       ('Quy định và chính sách', 15);
+       ('Quy định và chính sách', 15),
+       ('Đóng góp cá nhân và kết quả', null),
+       ('Mục tiêu quý tiếp theo', null),
+       ('Đánh giá của quản lý', null);
 
 INSERT INTO questions (title, point, criteria_id)
 VALUES ('Mức độ hoàn thành mục tiêu công việc được giao trong thời gian qua?', 15, 1),
@@ -76,11 +79,6 @@ VALUES ('50%', 1, 1),
        ('Xử lý mức cơ bản', 3, 9),
        ('Xử lý tốt', 4, 9),
        ('Xử lý xuất sắc', 5, 9),
-       ('Hầu như không', 1, 10),
-       ('Có ít đóng góp', 2, 10),
-       ('Đóng góp trung bình', 3, 10),
-       ('Có nhiều đóng góp', 4, 10),
-       ('Có rất nhiều đóng góp', 5, 10),
        ('Hầu như không', 1, 10),
        ('Có ít đóng góp', 2, 10),
        ('Đóng góp trung bình', 3, 10),

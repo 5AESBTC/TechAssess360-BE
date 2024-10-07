@@ -20,14 +20,6 @@ CREATE TABLE users
     CONSTRAINT pk_users PRIMARY KEY (id)
 );
 
-CREATE TABLE users_user_projects
-(
-    user_id          BIGINT NOT NULL,
-    user_projects_id BIGINT NOT NULL
-);
-
-
-
 CREATE TABLE projects
 (
     id        BIGINT AUTO_INCREMENT NOT NULL,
@@ -72,12 +64,6 @@ ALTER TABLE ranks
 ALTER TABLE users
     ADD CONSTRAINT FK_USERS_ON_RANK FOREIGN KEY (rank_id) REFERENCES ranks (id);
 
-ALTER TABLE users_user_projects
-    ADD CONSTRAINT fk_useusepro_on_user FOREIGN KEY (user_id) REFERENCES users (id);
-
-ALTER TABLE users_user_projects
-    ADD CONSTRAINT fk_useusepro_on_user_project FOREIGN KEY (user_projects_id) REFERENCES user_projects (id);
-
 CREATE TABLE IF NOT EXISTS roles
 (
     id   BIGINT AUTO_INCREMENT NOT NULL,
@@ -103,7 +89,7 @@ CREATE TABLE criterias
 (
     id    BIGINT AUTO_INCREMENT NOT NULL,
     title VARCHAR(255)          NULL,
-    point INT                   NOT NULL,
+    point INT                   NULL,
     CONSTRAINT pk_criteria PRIMARY KEY (id)
 );
 
