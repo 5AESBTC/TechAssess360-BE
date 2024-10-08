@@ -49,7 +49,7 @@ public class AssessService implements IAssessService {
         ETypeAssess type = null;
         if (assessReqDto.getUserId().equals(assessReqDto.getToUserId())) {
             type = ETypeAssess.SELF;
-        } else if (userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get().getUserRoles().equals("MANAGER")) {
+        } else if(userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get().getUserRoles().equals("MANAGER")) {
             type = ETypeAssess.MANAGER;
         } else {
             type = ETypeAssess.TEAM;
@@ -65,12 +65,12 @@ public class AssessService implements IAssessService {
         assessReqDto.getAssessDetails().forEach(item -> {
             AssessDetail assessDetail = assessDetailMapper.toAssessDetail(item);
             assessDetail.setAssess(assess);
-            if (item.getCriteriaId().equals("6") || item.getCriteriaId().equals("7") || item.getCriteriaId().equals("8")) {
+            if (item.getCriteriaId().equals("6")|| item.getCriteriaId().equals("7") || item.getCriteriaId().equals("8")) {
                 assessDetail.setComment(true);
             }
             if (item.getQuestionId() != null) {
                 assessDetail.setQuestion(questionRepository.findById(Long.valueOf(item.getQuestionId())).get());
-            } else {
+            }else {
                 assessDetail.setQuestion(null);
             }
             assessDetail.setCriteria(criteriaRepository.findById(Long.valueOf(item.getCriteriaId())).get());
