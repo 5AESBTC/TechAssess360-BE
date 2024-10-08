@@ -1,5 +1,6 @@
 package com.example.sourcebase.service.impl;
 
+import com.cloudinary.api.exceptions.NotFound;
 import com.example.sourcebase.domain.Assess;
 import com.example.sourcebase.domain.AssessDetail;
 import com.example.sourcebase.domain.User;
@@ -26,6 +27,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -96,5 +98,12 @@ public class AssessService implements IAssessService {
     @Override
     public boolean isSubmitForm(Long userId, Long toUserId) {
         return false;
+    }
+
+    @Override
+    public AssessResDTO getAssess(Long userId) {
+        AssessResDTO myAssess = assessMapper.toAssessResDto(assessRepository.findByToUserIdAndAssessmentType(userId, ETypeAssess.SELF));
+        myAssess.getAssessDetails().forEach(item -> item.setAssessId(myAssess.getId()));
+        return myAssess;
     }
 }
