@@ -4,6 +4,7 @@ import com.cloudinary.api.exceptions.NotFound;
 import com.example.sourcebase.domain.Assess;
 import com.example.sourcebase.domain.AssessDetail;
 import com.example.sourcebase.domain.User;
+import com.example.sourcebase.domain.UserRole;
 import com.example.sourcebase.domain.dto.resdto.AssessDetailResDto;
 import com.example.sourcebase.domain.dto.resdto.CriteriaResDTO;
 import com.example.sourcebase.domain.dto.resdto.QuestionResDTO;
@@ -49,10 +50,16 @@ public class AssessService implements IAssessService {
     @Override
     public AssessResDTO updateAssess(AssessReqDTO assessReqDto) {
         ETypeAssess type = null;
+        List<UserRole> roles = userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get().getUserRoles();
         if (assessReqDto.getUserId().equals(assessReqDto.getToUserId())) {
             type = ETypeAssess.SELF;
-        } else if(userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get().getUserRoles().equals("MANAGER")) {
-            type = ETypeAssess.MANAGER;
+        } else if(!roles.isEmpty()) {
+            for (UserRole role : roles) {
+                if (role.getRole().getName().equalsIgnoreCase(ETypeAssess.MANAGER.name())) {
+                    type = ETypeAssess.MANAGER;
+                    break;
+                }
+            }
         } else {
             type = ETypeAssess.TEAM;
         }
