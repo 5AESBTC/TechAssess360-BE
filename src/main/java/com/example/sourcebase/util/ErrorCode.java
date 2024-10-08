@@ -30,8 +30,8 @@ public enum ErrorCode {
      INVALID_INPUT (411, "Dữ liệu đầu vào không hợp lệ",HttpStatus.CONFLICT),
     INVALID_START_DATE(412, "Ngày bắt đầu không được sau ngày hiện tại",HttpStatus.CONFLICT),
     INVALID_END_DATE(413, "Ngày kết thúc phải lớn hơn ngày hiện tại",HttpStatus.CONFLICT),
-    END_DATE_BEFORE_START_DATE(414, "Ngày kết thúc phải sau ngày bắt đầu",HttpStatus.CONFLICT);
-
+    END_DATE_BEFORE_START_DATE(414, "Ngày kết thúc phải sau ngày bắt đầu",HttpStatus.CONFLICT),
+    ASSESS_IS_NOT_EXIST(404, "Assess Not Found", HttpStatus.NOT_FOUND);
     int code;
     String message;
     HttpStatus httpStatus;
