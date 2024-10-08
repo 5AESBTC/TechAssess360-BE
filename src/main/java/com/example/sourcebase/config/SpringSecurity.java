@@ -45,6 +45,7 @@ public class SpringSecurity {
                         authorize
                                 .requestMatchers("/api/auths/**").permitAll()
                                 .requestMatchers("/api/users/**").permitAll()
+                                .requestMatchers("/api/projects/**").permitAll()
                                 .requestMatchers("/api/criterias/**").permitAll()
                                 .requestMatchers("/api/questions/**").permitAll()
                                 .requestMatchers("/api/assess/**").permitAll()
