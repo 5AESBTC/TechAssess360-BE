@@ -33,9 +33,7 @@ public class ProjectService implements IProjectService {
 
     @Override
     public ProjectResDTO addProject(ProjectReqDTO projectRequest) {
-        if (projectRepository.existsByName(projectRequest.getName())) {
-            throw new AppException(ErrorCode.PPOJECT_IS_EXIST);
-        }
+
         validateProject(projectRequest);
         Project project = ProjectMapper.INSTANCE.toEntity(projectRequest);
 
@@ -90,7 +88,9 @@ public class ProjectService implements IProjectService {
 
 
     private void validateProject(ProjectReqDTO projectReqDTO) {
-
+        if (projectRepository.existsByName(projectReqDTO.getName())) {
+            throw new AppException(ErrorCode.PPOJECT_IS_EXIST);
+        }
         LocalDate currentDate = LocalDate.now();
 
         if (!projectReqDTO.getStartDay().isAfter(currentDate)) {

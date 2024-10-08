@@ -16,6 +16,4 @@ public interface IProjectService {
     Object getPrjectById(Long id);
 
     boolean deleteProject(Long id);
-
-    ProjectResDTO updateProject(Long id, ProjectReqDTO projectReqDTO);
 }
