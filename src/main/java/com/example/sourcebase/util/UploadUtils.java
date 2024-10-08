@@ -12,7 +12,7 @@ public class UploadUtils {
 
     public Map buildImageUploadParams(FileInfo file) {
         if (file == null || file.getId() == null)
-            throw new RuntimeException("Không thể upload hình ảnh của sản phẩm chưa được lưu");
+            throw new RuntimeException("Không thể upload hình ảnh của bạn chưa được lưu");
 
         String publicId = String.format("%s/%s", IMAGE_UPLOAD_FOLDER, file.getId());
 

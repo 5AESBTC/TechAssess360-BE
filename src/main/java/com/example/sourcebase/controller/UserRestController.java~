@@ -39,15 +39,6 @@ public class UserRestController {
         );
     }
 
-    @PostMapping
-    public ResponseEntity<ResponseData<?>> register(@RequestBody RegisterReqDTO registerReqDTO) {
-        return ResponseEntity.ok(
-                ResponseData.builder()
-                        .code(SuccessCode.CREATED.getCode())
-                        .message(SuccessCode.CREATED.getMessage())
-                        .data(userService.register(registerReqDTO))
-                        .build());
-    }
     @GetMapping("/{id}")
     public ResponseEntity<ResponseData<?>> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(
@@ -75,13 +66,13 @@ public class UserRestController {
                         .message(SuccessCode.DELETE_SUCCESSFUL.getMessage())
                         .build());
     }
-    @PatchMapping("/{id}")
-    public ResponseEntity<ResponseData<?>> updateUser(@PathVariable Long id, @RequestBody RegisterReqDTO request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseData<?>> updateUser(@PathVariable Long id, @RequestBody RegisterReqDTO request, @RequestParam(value = "avatar", required = false) MultipartFile avatar) throws IOException {
         return ResponseEntity.ok(
                 ResponseData.builder()
                         .code(SuccessCode.UPDATE_SUCCESSFUL.getCode())
                         .message(SuccessCode.UPDATE_SUCCESSFUL.getMessage())
-                        .data(userService.updateUser(id, request))
+                        .data(userService.updateUser(id, request, avatar))
                         .build());
     }
 
@@ -105,10 +96,6 @@ public class UserRestController {
                         .data(usersHadSameProject)
                         .build()
         );
-    }
-    @PostMapping("/{id}/upload-avatar")
-    public UserResDTO uploadAvatar(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
-        return userService.uploadAvatar(id, file);
     }
 
 }

@@ -2,6 +2,7 @@ package com.example.sourcebase.domain.dto.resdto.user;
 
 import com.example.sourcebase.domain.Rank;
 import com.example.sourcebase.domain.dto.resdto.FileInfoResDTO;
+import com.example.sourcebase.domain.dto.resdto.ProjectResDTO;
 import com.example.sourcebase.domain.enumeration.EGender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +10,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -26,6 +29,8 @@ public class UserDetailResDTO {
     String username;
     String password;
     Rank rank;
+    LocalDateTime createdAt;
     FileInfoResDTO fileInfoResDto;
     List<UserRoleResDTO> userRoles;
+    List<ProjectResDTO> projects;
 }

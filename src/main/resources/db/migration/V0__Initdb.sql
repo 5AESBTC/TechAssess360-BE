@@ -8,6 +8,7 @@ CREATE TABLE users
     modified_at  datetime              NULL,
     modified_by  VARCHAR(255)          NULL,
     name         VARCHAR(255)          NULL,
+    file_info_id VARCHAR(255)          NULL,
     email        VARCHAR(255)          NULL,
     phone_number VARCHAR(255)          NULL,
     dob          date                  NULL,
@@ -18,6 +19,17 @@ CREATE TABLE users
     is_deleted   BIT(1)                NOT NULL,
     rank_id      BIGINT                NULL,
     CONSTRAINT pk_users PRIMARY KEY (id)
+);
+
+CREATE TABLE files
+(
+    id          VARCHAR(255) NOT NULL,
+    file_name   VARCHAR(255) NULL,
+    file_folder VARCHAR(255) NULL,
+    file_url    VARCHAR(255) NULL,
+    file_type   VARCHAR(255) NULL,
+    cloud_id    VARCHAR(255) NULL,
+    CONSTRAINT pk_files PRIMARY KEY (id)
 );
 
 CREATE TABLE projects
@@ -57,6 +69,9 @@ CREATE TABLE ranks
     level       VARCHAR(255)          NULL,
     CONSTRAINT pk_levels PRIMARY KEY (id)
 );
+
+ALTER TABLE users
+    ADD CONSTRAINT FK_USERS_ON_FILE_INFO FOREIGN KEY (file_info_id) REFERENCES files (id);
 
 ALTER TABLE ranks
     ADD CONSTRAINT FK_LEVELS_ON_POSITION FOREIGN KEY (position_id) REFERENCES positions (id);

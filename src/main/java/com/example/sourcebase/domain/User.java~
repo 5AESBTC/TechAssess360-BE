@@ -22,6 +22,8 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     Long id;
     String name;
+    @OneToOne
+    FileInfo fileInfo;
     String email;
     String phoneNumber;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
@@ -38,8 +40,5 @@ public class User extends BaseEntity {
     List<UserProject> userProjects;
     @ManyToOne
     Rank rank;
-String avatar;
-    public String getAvatar() {
-        return (avatar == null || avatar.isEmpty()) ? "D:\\resfull\\Avatar\\avata.png" : avatar;
-    }
+
 }

@@ -22,6 +22,8 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     Long id;
     String name;
+    @OneToOne(cascade = CascadeType.REMOVE)
+    FileInfo fileInfo;
     String email;
     String phoneNumber;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")

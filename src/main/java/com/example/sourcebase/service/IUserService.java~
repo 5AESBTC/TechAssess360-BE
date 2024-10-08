@@ -16,7 +16,7 @@ public interface IUserService {
     List<UserResDTO> getAllUser();
 
 
-    UserResDTO register(RegisterReqDTO userNew);
+    UserResDTO register(RegisterReqDTO userNew , MultipartFile avatar) throws IOException;
     String login(UserLoginReqDTO userLogin);
     UserDetailResDTO getUserDetailBy(String username);
 
@@ -27,6 +27,4 @@ public interface IUserService {
     UserResDTO updateUser(Long id, RegisterReqDTO request);
 
     List<UserResDTO> getAllUserHadSameProject(Long userId);
-
-    UserResDTO uploadAvatar(Long id, MultipartFile file)throws IOException;
 }
