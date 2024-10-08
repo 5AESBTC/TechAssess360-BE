@@ -43,4 +43,33 @@ public class ProjectRestController {
                         .data(projectService.getAll())
                         .build());
     }
+    @DeleteMapping("/{id}")
+    public ResponseEntity<ResponseData<?>> deleteProject(@PathVariable Long id) {
+        boolean isDeleted = projectService.deleteProject(id);
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.DELETE_SUCCESSFUL.getCode())
+                        .message(SuccessCode.DELETE_SUCCESSFUL.getMessage())
+                        .build());
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ResponseData<?>> getProjectById(@PathVariable Long id) {
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.GET_SUCCESSFUL.getCode())
+                        .message(SuccessCode.GET_SUCCESSFUL.getMessage())
+                        .data(projectService.getPrjectById(id))
+                        .build());
+    }
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseData<?>> updateProject(@PathVariable Long id, @RequestBody ProjectReqDTO projectReqDTO) {
+        ProjectResDTO updatedProject = projectService.updateProject(id, projectReqDTO);
+            return ResponseEntity.ok(
+                    ResponseData.builder()
+                            .code(SuccessCode.UPDATE_SUCCESSFUL.getCode())
+                            .message(SuccessCode.UPDATE_SUCCESSFUL.getMessage())
+                            .data(updatedProject)
+                            .build());
+        }
 }

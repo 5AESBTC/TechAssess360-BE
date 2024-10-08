@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -35,20 +36,7 @@ public class ProjectService implements IProjectService {
         if (projectRepository.existsByName(projectRequest.getName())) {
             throw new AppException(ErrorCode.PPOJECT_IS_EXIST);
         }
-
-        LocalDate currentDate = LocalDate.now();
-
-        if (!projectRequest.getStartDay().isAfter(currentDate)) {
-            throw new AppException(ErrorCode.INVALID_START_DATE);
-        }
-        if (!projectRequest.getEndDay().isAfter(currentDate)) {
-            throw new AppException(ErrorCode.INVALID_END_DATE);
-        }
-
-        if (!projectRequest.getEndDay().isAfter(projectRequest.getStartDay())) {
-            throw new AppException(ErrorCode.END_DATE_BEFORE_START_DATE);
-        }
-
+        validateProject(projectRequest);
         Project project = ProjectMapper.INSTANCE.toEntity(projectRequest);
 
         Project savedProject = projectRepository.save(project);
@@ -67,5 +55,52 @@ public class ProjectService implements IProjectService {
         }
 
         return projectResDTOS;
+    }
+
+    @Override
+    public Object getPrjectById(Long id) {
+        Optional<Project> project = projectRepository.findById(id);
+        return project.orElseThrow(() -> new AppException(ErrorCode.PROJECT_NOT_FOUND));
+    }
+
+    @Override
+    public boolean deleteProject(Long id) {
+        if (projectRepository.existsById(id)) {
+            projectRepository.deleteById(id);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public ProjectResDTO updateProject(Long id, ProjectReqDTO projectReqDTO) {
+
+        validateProject(projectReqDTO);
+        return projectRepository.findById(id).map(existingProject -> {
+
+            existingProject.setName(projectReqDTO.getName());
+            existingProject.setStartDay(projectReqDTO.getStartDay());
+            existingProject.setEndDay(projectReqDTO.getEndDay());
+            Project updatedProject = projectRepository.save(existingProject);
+            return ProjectMapper.INSTANCE.toResponseDTO(updatedProject);
+        }).orElse(null);
+    }
+
+
+
+    private void validateProject(ProjectReqDTO projectReqDTO) {
+
+        LocalDate currentDate = LocalDate.now();
+
+        if (!projectReqDTO.getStartDay().isAfter(currentDate)) {
+            throw new AppException(ErrorCode.INVALID_START_DATE);
+        }
+        if (!projectReqDTO.getEndDay().isAfter(currentDate)) {
+            throw new AppException(ErrorCode.INVALID_END_DATE);
+        }
+        if (!projectReqDTO.getEndDay().isAfter(projectReqDTO.getStartDay())) {
+            throw new AppException(ErrorCode.END_DATE_BEFORE_START_DATE);
+        }
     }
 }

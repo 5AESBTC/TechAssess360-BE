@@ -12,4 +12,10 @@ public interface IProjectService {
     ProjectResDTO addProject(ProjectReqDTO projectRequest);
 
     List<ProjectResDTO> getAll();
+
+    Object getPrjectById(Long id);
+
+    boolean deleteProject(Long id);
+
+    ProjectResDTO updateProject(Long id, ProjectReqDTO projectReqDTO);
 }
