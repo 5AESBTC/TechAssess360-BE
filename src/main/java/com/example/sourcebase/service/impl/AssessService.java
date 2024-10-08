@@ -50,18 +50,19 @@ public class AssessService implements IAssessService {
     @Override
     public AssessResDTO updateAssess(AssessReqDTO assessReqDto) {
         ETypeAssess type = null;
-        List<UserRole> roles = userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get().getUserRoles();
-        if (assessReqDto.getUserId().equals(assessReqDto.getToUserId())) {
-            type = ETypeAssess.SELF;
-        } else if(!roles.isEmpty()) {
-            for (UserRole role : roles) {
-                if (role.getRole().getName().equalsIgnoreCase(ETypeAssess.MANAGER.name())) {
+        User user = userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get();
+        if (user != null) {
+            List<UserRole> userRoles = user.getUserRoles();
+            if (assessReqDto.getToUserId().equals(assessReqDto.getUserId())) {
+                type = ETypeAssess.SELF;
+            } else {
+                boolean isManager = userRoles.stream().anyMatch(item -> item.getRole().getName().equalsIgnoreCase("Manager"));
+                if (isManager) {
                     type = ETypeAssess.MANAGER;
-                    break;
+                }else {
+                    type = ETypeAssess.TEAM;
                 }
             }
-        } else {
-            type = ETypeAssess.TEAM;
         }
         User userReview = userRepository.findById(Long.valueOf(assessReqDto.getUserId())).get();
         User toUser = userRepository.findById(Long.valueOf(assessReqDto.getToUserId())).get();
@@ -74,12 +75,12 @@ public class AssessService implements IAssessService {
         assessReqDto.getAssessDetails().forEach(item -> {
             AssessDetail assessDetail = assessDetailMapper.toAssessDetail(item);
             assessDetail.setAssess(assess);
-            if (item.getCriteriaId().equals("6")|| item.getCriteriaId().equals("7") || item.getCriteriaId().equals("8")) {
+            if (item.getCriteriaId().equals("6") || item.getCriteriaId().equals("7") || item.getCriteriaId().equals("8")) {
                 assessDetail.setComment(true);
             }
             if (item.getQuestionId() != null) {
                 assessDetail.setQuestion(questionRepository.findById(Long.valueOf(item.getQuestionId())).get());
-            }else {
+            } else {
                 assessDetail.setQuestion(null);
             }
             assessDetail.setCriteria(criteriaRepository.findById(Long.valueOf(item.getCriteriaId())).get());
