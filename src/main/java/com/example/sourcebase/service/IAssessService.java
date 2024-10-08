@@ -10,4 +10,6 @@ public interface IAssessService {
     List<AssessResDTO> getListAssessByUserId(Long userId);
 
     boolean isSubmitForm(Long userId, Long toUserId);
+
+    AssessResDTO getAssess(Long userId);
 }
