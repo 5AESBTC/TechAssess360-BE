@@ -1,6 +1,5 @@
 package com.example.sourcebase.controller;
 
-import com.example.sourcebase.domain.User;
 import com.example.sourcebase.domain.dto.reqdto.user.RegisterReqDTO;
 import com.example.sourcebase.domain.dto.resdto.user.UserResDTO;
 import com.example.sourcebase.service.IUserService;
@@ -68,7 +67,7 @@ public class UserRestController {
                         .build());
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ResponseData<?>> updateUser(@PathVariable Long id, @RequestBody(required = false) RegisterReqDTO request, @RequestParam(value = "avatar", required = false) MultipartFile avatar) throws IOException {
+    public ResponseEntity<ResponseData<?>> updateUser(@PathVariable Long id, @RequestBody RegisterReqDTO request, @RequestParam(value = "avatar", required = false) MultipartFile avatar) throws IOException {
         return ResponseEntity.ok(
                 ResponseData.builder()
                         .code(SuccessCode.UPDATE_SUCCESSFUL.getCode())

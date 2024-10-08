@@ -21,7 +21,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.example.sourcebase.exception.AppException;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
@@ -39,6 +41,7 @@ public class UserService implements IUserService, UserDetailsService {
     IRankRepository rankRepository;
     IPositionRepository positionRepository;
     PasswordEncoder passwordEncoder;
+    UploadService uploadService;
 
 
 
@@ -53,15 +56,18 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public UserResDTO register(RegisterReqDTO registerReqDTO) {
+    public UserResDTO register(RegisterReqDTO registerReqDTO , MultipartFile avatar) throws IOException {
         if (userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(
                 registerReqDTO.getEmail(),
                 registerReqDTO.getUsername(),
                 registerReqDTO.getPhoneNumber())) {
             log.LogError(ErrorCode.USERNAME_EXISTS);
         }
+        FileInfo fileInfo = uploadService.saveAvatar(avatar);
+
         registerReqDTO.setPassword(passwordEncoder.encode(registerReqDTO.getPassword()));
         User userNew = userMapper.toUser(registerReqDTO);
+        userNew.setFileInfo(fileInfo);
         User createdUser = userRepository.save(userNew);
         saveUserRole(userNew, roleRepository.findById(2L).orElseThrow(() -> new NoSuchElementException("Role not found")));
         saveRank(userNew, registerReqDTO.getPosition(), registerReqDTO.getLevel());
@@ -95,6 +101,7 @@ public class UserService implements IUserService, UserDetailsService {
 
         return jwtTokenProvider.generateToken(userDetailResDto.getId(),
                 userDetailResDto.getName(),
+                userDetailResDto.getFileInfoResDto(),
                 userDetailResDto.getEmail(),
                 userDetailResDto.getPhoneNumber(),
                 userDetailResDto.getUsername(),
@@ -135,13 +142,36 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public UserResDTO updateUser(Long id, RegisterReqDTO request) {
+    @Transactional
+    public UserResDTO updateUser(Long id, RegisterReqDTO request, MultipartFile avatar) throws IOException {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
+        FileInfo fileInfo = uploadService.saveAvatar(avatar);
+        if(!request.getEmail().equals(existingUser.getEmail())) {
+            if(userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(request.getEmail(), null, null)) {
+                throw new IllegalArgumentException("Email already exists");
+            }
+        }
+        if(!request.getPhoneNumber().equals(existingUser.getPhoneNumber())) {
+            if(userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(null, request.getPhoneNumber(), null)) {
+                throw new IllegalArgumentException("Phone already exists");
+            }
+        }
+
         User userToUpdate = userMapper.toUser(request);
-        userToUpdate.setId(id);
-//        userToUpdate.setCreatedBy(existingUser.getCreatedBy());
-        User updatedUser = userRepository.save(userToUpdate);
+        existingUser.setFileInfo(fileInfo);
+        existingUser.setName(userToUpdate.getName());
+        existingUser.setPhoneNumber(userToUpdate.getPhoneNumber());
+        existingUser.setEmail(userToUpdate.getEmail());
+        existingUser.setUsername(userToUpdate.getUsername());
+        existingUser.setPassword(userToUpdate.getPassword());
+        existingUser.setGender(userToUpdate.getGender());
+        existingUser.setRank(userToUpdate.getRank());
+        existingUser.setDob(userToUpdate.getDob());
+        existingUser.setUserRoles(userToUpdate.getUserRoles());
+        existingUser.setUserProjects(userToUpdate.getUserProjects());
+
+        User updatedUser = userRepository.save(existingUser);
         return userMapper.toUserResDTO(updatedUser);
     }
     @Transactional

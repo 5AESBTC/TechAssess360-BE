@@ -24,7 +24,7 @@ public interface IUserService {
 
     boolean deleteUser(Long id);
 
-    UserResDTO updateUser(Long id, RegisterReqDTO request, MultipartFile avatar) throws IOException;
+    UserResDTO updateUser(Long id, RegisterReqDTO request);
 
     List<UserResDTO> getAllUserHadSameProject(Long userId);
 }

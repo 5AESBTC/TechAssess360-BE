@@ -22,7 +22,7 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
     Long id;
     String name;
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne
     FileInfo fileInfo;
     String email;
     String phoneNumber;
