@@ -1,5 +1,6 @@
 package com.example.sourcebase.controller;
 
+import com.example.sourcebase.domain.User;
 import com.example.sourcebase.domain.dto.reqdto.user.RegisterReqDTO;
 import com.example.sourcebase.domain.dto.resdto.user.UserResDTO;
 import com.example.sourcebase.service.IUserService;
@@ -14,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -37,15 +40,6 @@ public class UserRestController {
         );
     }
 
-    @PostMapping
-    public ResponseEntity<ResponseData<?>> register(@RequestBody RegisterReqDTO registerReqDTO) {
-        return ResponseEntity.ok(
-                ResponseData.builder()
-                        .code(SuccessCode.CREATED.getCode())
-                        .message(SuccessCode.CREATED.getMessage())
-                        .data(userService.register(registerReqDTO))
-                        .build());
-    }
     @GetMapping("/{id}")
     public ResponseEntity<ResponseData<?>> getUserById(@PathVariable Long id) {
         return ResponseEntity.ok(
@@ -73,13 +67,13 @@ public class UserRestController {
                         .message(SuccessCode.DELETE_SUCCESSFUL.getMessage())
                         .build());
     }
-    @PatchMapping("/{id}")
-    public ResponseEntity<ResponseData<?>> updateUser(@PathVariable Long id, @RequestBody RegisterReqDTO request) {
+    @PutMapping("/{id}")
+    public ResponseEntity<ResponseData<?>> updateUser(@PathVariable Long id, @RequestBody(required = false) RegisterReqDTO request, @RequestParam(value = "avatar", required = false) MultipartFile avatar) throws IOException {
         return ResponseEntity.ok(
                 ResponseData.builder()
                         .code(SuccessCode.UPDATE_SUCCESSFUL.getCode())
                         .message(SuccessCode.UPDATE_SUCCESSFUL.getMessage())
-                        .data(userService.updateUser(id, request))
+                        .data(userService.updateUser(id, request, avatar))
                         .build());
     }
 
