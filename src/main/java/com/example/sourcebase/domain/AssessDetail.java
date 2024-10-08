@@ -16,13 +16,16 @@ public class AssessDetail {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @ManyToOne(cascade = CascadeType.REMOVE)
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "assess_id", nullable = false)
     Assess assess;
 
     @ManyToOne
+    @JoinColumn(name = "criteria_id")
     Criteria criteria;
 
     @ManyToOne
+    @JoinColumn(name = "question_id")
     Question question;
 
     int value;
