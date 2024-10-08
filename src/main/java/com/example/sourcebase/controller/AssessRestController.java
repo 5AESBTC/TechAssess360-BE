@@ -2,6 +2,7 @@ package com.example.sourcebase.controller;
 
 import com.example.sourcebase.domain.dto.reqdto.AssessReqDTO;
 import com.example.sourcebase.service.IAssessService;
+import com.example.sourcebase.util.ErrorCode;
 import com.example.sourcebase.util.ResponseData;
 import com.example.sourcebase.util.SuccessCode;
 import jakarta.transaction.Transactional;
@@ -9,6 +10,7 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -39,14 +41,21 @@ public class AssessRestController {
                         .build()
         );
     }
-
-    @GetMapping("/is-submit-form")
-    public ResponseEntity<ResponseData<?>> isSubmitForm(@RequestParam Long userId, @RequestParam Long toUserId) {
+    @GetMapping("/{userId}")
+    public ResponseEntity<ResponseData<?>> getAllUserHadSameProject(@PathVariable Long userId) {
+        if (assessService.getAssess(userId) == null) {
+            return ResponseEntity.status(ErrorCode.ASSESS_IS_NOT_EXIST.getHttpStatus()).body(
+                    ResponseData.builder()
+                            .code(ErrorCode.ASSESS_IS_NOT_EXIST.getCode())
+                            .message(ErrorCode.ASSESS_IS_NOT_EXIST.getMessage())
+                            .build()
+            );
+        }
         return ResponseEntity.ok(
                 ResponseData.builder()
-                        .code(SuccessCode.CREATED.getCode())
-                        .message(SuccessCode.CREATED.getMessage())
-                        .data(assessService.isSubmitForm(userId, toUserId))
+                        .code(SuccessCode.GET_SUCCESSFUL.getCode())
+                        .message(SuccessCode.GET_SUCCESSFUL.getMessage())
+                        .data(assessService.getAssess(userId))
                         .build()
         );
     }

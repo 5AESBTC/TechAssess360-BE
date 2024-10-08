@@ -32,7 +32,7 @@ public enum ErrorCode {
     INVALID_END_DATE(413, "Ngày kết thúc phải lớn hơn ngày hiện tại",HttpStatus.CONFLICT),
     END_DATE_BEFORE_START_DATE(414, "Ngày kết thúc phải sau ngày bắt đầu",HttpStatus.CONFLICT),
     PROJECT_NOT_FOUND(415,"Không tìm thấy project" ,HttpStatus.NOT_FOUND );
-
+    ASSESS_IS_NOT_EXIST(404, "Assess Not Found", HttpStatus.NOT_FOUND);
     int code;
     String message;
     HttpStatus httpStatus;
