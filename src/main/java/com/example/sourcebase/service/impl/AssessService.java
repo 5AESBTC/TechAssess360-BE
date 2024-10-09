@@ -60,6 +60,7 @@ public class AssessService implements IAssessService {
         assess.setUser(userReview);
         assess.setToUser(toUser);
         assess.setAssessmentType(type);
+        assess.setTotalPoint(Integer.parseInt(assessReqDto.getTotalPoint()));
         assess.setAssessmentDate(LocalDate.now());
 
         assessReqDto.getAssessDetails().forEach(item -> {
