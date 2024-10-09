@@ -32,7 +32,7 @@ public class User extends BaseEntity {
     EGender gender;
     String username;
     String password;
-    @OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     List<UserRole> userRoles;
     boolean isActive;
     boolean isDeleted;

@@ -26,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -130,11 +131,15 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public boolean deleteUser(Long id) {
         try {
-            User user = userRepository.findById(id)
-                    .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-            user.setDeleted(true);
-            userRepository.save(user);
-            return true;
+            Optional<User> userOpt = userRepository.findById(id);
+            if (userOpt.isPresent()) {
+                User user = userOpt.get();
+                user.setDeleted(true);
+                userRepository.save(user);
+                return true;
+            } else {
+                throw new AppException(ErrorCode.USER_NOT_FOUND);
+            }
         }catch (Exception e){
             System.out.println(e);
         }
@@ -159,17 +164,17 @@ public class UserService implements IUserService, UserDetailsService {
         }
 
         User userToUpdate = userMapper.toUser(request);
-        existingUser.setFileInfo(fileInfo);
+      //  existingUser.setFileInfo(fileInfo);
         existingUser.setName(userToUpdate.getName());
         existingUser.setPhoneNumber(userToUpdate.getPhoneNumber());
         existingUser.setEmail(userToUpdate.getEmail());
         existingUser.setUsername(userToUpdate.getUsername());
         existingUser.setPassword(userToUpdate.getPassword());
         existingUser.setGender(userToUpdate.getGender());
-        existingUser.setRank(userToUpdate.getRank());
+        saveRank(existingUser, request.getPosition(), request.getLevel());
         existingUser.setDob(userToUpdate.getDob());
-        existingUser.setUserRoles(userToUpdate.getUserRoles());
-        existingUser.setUserProjects(userToUpdate.getUserProjects());
+//        existingUser.setUserRoles(userToUpdate.getUserRoles());
+//        existingUser.setUserProjects(userToUpdate.getUserProjects());
 
         User updatedUser = userRepository.save(existingUser);
         return userMapper.toUserResDTO(updatedUser);

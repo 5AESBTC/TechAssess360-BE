@@ -29,8 +29,10 @@ public class UserDetailResDTO {
     String username;
     String password;
     Rank rank;
+    boolean isDeleted;
     LocalDateTime createdAt;
     FileInfoResDTO fileInfoResDto;
     List<UserRoleResDTO> userRoles;
     List<ProjectResDTO> projects;
+    List<UserProjectDTO> userProjects;
 }

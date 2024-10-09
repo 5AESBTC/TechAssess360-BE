@@ -20,6 +20,7 @@ public interface UserMapper {
     User toUser(RegisterReqDTO registerReqDTO);
 
 //    @Mapping(target = "dob", source = "dob", dateFormat = "yyyy-MM-dd")
+@Mapping(source = "deleted", target = "deleted")
     UserResDTO toUserResDTO(User user);
 
     UserRoleResDTO toUserRoleResDTO(User user);
