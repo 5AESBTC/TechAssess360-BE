@@ -29,7 +29,7 @@ import java.util.List;
 public class UserRestController {
     IUserService userService;
 
-    @GetMapping("")
+    @GetMapping()
     public ResponseEntity<ResponseData<?>> getAllUser() {
         return ResponseEntity.ok(
                 ResponseData.builder()
