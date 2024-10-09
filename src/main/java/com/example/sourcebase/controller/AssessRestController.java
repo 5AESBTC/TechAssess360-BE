@@ -10,7 +10,6 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -32,6 +31,16 @@ public class AssessRestController {
         );
     }
     @GetMapping("/list-assess-of-user/{userId}")
+    public ResponseEntity<ResponseData<?>> getListAssessOfUserId(@PathVariable Long userId) {
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.GET_SUCCESSFUL.getCode())
+                        .message(SuccessCode.GET_SUCCESSFUL.getMessage())
+                        .data(assessService.getListAssessOfUserId(userId))
+                        .build()
+        );
+    }
+    @GetMapping("/list-assess-by-user/{userId}")
     public ResponseEntity<ResponseData<?>> getListAssessByUserId(@PathVariable Long userId) {
         return ResponseEntity.ok(
                 ResponseData.builder()
