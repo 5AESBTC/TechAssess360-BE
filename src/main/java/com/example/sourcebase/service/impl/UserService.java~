@@ -171,7 +171,9 @@ public class UserService implements IUserService, UserDetailsService {
         existingUser.setUsername(userToUpdate.getUsername());
         existingUser.setPassword(userToUpdate.getPassword());
         existingUser.setGender(userToUpdate.getGender());
-        saveRank(existingUser, request.getPosition(), request.getLevel());
+        if (request.getPosition() != null && request.getLevel() != null) {
+            saveRank(existingUser, request.getPosition(), request.getLevel());
+        }
         existingUser.setDob(userToUpdate.getDob());
 //        existingUser.setUserRoles(userToUpdate.getUserRoles());
 //        existingUser.setUserProjects(userToUpdate.getUserProjects());

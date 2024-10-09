@@ -33,4 +33,5 @@ public class UserDetailResDTO {
     FileInfoResDTO fileInfoResDto;
     List<UserRoleResDTO> userRoles;
     List<ProjectResDTO> projects;
+    List<UserProjectDTO> userProjects;
 }
