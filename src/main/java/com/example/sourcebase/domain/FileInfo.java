@@ -38,7 +38,4 @@ public class FileInfo {
     @Column(name = "cloud_id")
     private String cloudId;
 
-    public FileInfoResDTO toResDto() {
-        return new FileInfoResDTO(cloudId, fileUrl);
-    }
 }

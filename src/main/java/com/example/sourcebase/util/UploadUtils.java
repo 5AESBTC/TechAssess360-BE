@@ -8,7 +8,7 @@ import java.util.Map;
 
 @Component
 public class UploadUtils {
-    public static final String IMAGE_UPLOAD_FOLDER = "job";
+    public static final String IMAGE_UPLOAD_FOLDER = "user-avatars";
 
     public Map buildImageUploadParams(FileInfo file) {
         if (file == null || file.getId() == null)

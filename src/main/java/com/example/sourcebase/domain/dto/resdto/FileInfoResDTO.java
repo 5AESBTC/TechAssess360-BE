@@ -10,6 +10,8 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FileInfoResDTO {
-    private String publicId;
-    private String url;
+    private String cloudId;
+
+    private String fileUrl;
+
 }

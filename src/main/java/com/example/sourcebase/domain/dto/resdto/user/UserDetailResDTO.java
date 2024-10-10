@@ -10,7 +10,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -34,5 +33,5 @@ public class UserDetailResDTO {
     FileInfoResDTO fileInfoResDto;
     List<UserRoleResDTO> userRoles;
     List<ProjectResDTO> projects;
-    List<UserProjectDTO> userProjects;
+    List<UserProjectResDTO> userProjects;
 }

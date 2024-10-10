@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserProjectDTO {
+public class UserProjectResDTO {
     private Long id;
     private ProjectResDTO project;
 }
