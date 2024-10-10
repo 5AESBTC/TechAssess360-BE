@@ -124,14 +124,16 @@ public class UserService implements IUserService, UserDetailsService {
         List<UserResDTO> userResDTOS = new ArrayList<>();
         for (User user : users) {
             UserResDTO userResDTO = userMapper.toUserResDTO(user);
-            List<UserProjectResDTO> userProjectResDTOS = new ArrayList<>();
-            for (UserProject userProject : user.getUserProjects()) {
-                UserProjectResDTO userProjectResDTO = new UserProjectResDTO();
-                userProjectResDTO.setProjectId(userProject.getProject().getId());
-                userProjectResDTO.setUserId(userProject.getUser().getId());
-                userProjectResDTOS.add(userProjectResDTO);
+            if (!user.getUserProjects().isEmpty()) {
+                List<UserProjectResDTO> userProjectResDTOS = new ArrayList<>();
+                for (UserProject userProject : user.getUserProjects()) {
+                    UserProjectResDTO userProjectResDTO = new UserProjectResDTO();
+                    userProjectResDTO.setProjectId(userProject.getProject().getId());
+                    userProjectResDTO.setUserId(userProject.getUser().getId());
+                    userProjectResDTOS.add(userProjectResDTO);
+                }
+                userResDTO.setUserProjects(userProjectResDTOS);
             }
-            userResDTO.setUserProjects(userProjectResDTOS);
             userResDTOS.add(userResDTO);
         }
         return userResDTOS;
