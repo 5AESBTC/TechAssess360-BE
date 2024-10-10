@@ -16,8 +16,8 @@ VALUES ('Hiệu suất công việc', 30),
        ('Tinh thần làm việc và thái độ', 20),
        ('Đóng góp và sáng kiến', 15),
        ('Quy định và chính sách', 15),
-       ('Đóng góp cá nhân và kết quả', 0),
-       ('Mục tiêu quý tiếp theo', 0),
+       ('Đóng góp của bản thân và kết quả', 0),
+       ('Dự kiến mục tiêu của bản thân quý tiếp theo', 0),
        ('Đánh giá của quản lý', 0);
 
 INSERT INTO questions (title, point, criteria_id)
