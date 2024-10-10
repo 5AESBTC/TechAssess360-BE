@@ -143,7 +143,18 @@ public class UserService implements IUserService, UserDetailsService {
     public UserResDTO getUserById(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
-        return userMapper.toUserResDTO(user);
+        UserResDTO userResDTO = userMapper.toUserResDTO(user);
+        if (!user.getUserProjects().isEmpty()) {
+            List<UserProjectResDTO> userProjectResDTOS = new ArrayList<>();
+            for (UserProject userProject : user.getUserProjects()) {
+                UserProjectResDTO userProjectResDTO = new UserProjectResDTO();
+                userProjectResDTO.setProjectId(userProject.getProject().getId());
+                userProjectResDTO.setUserId(userProject.getUser().getId());
+                userProjectResDTOS.add(userProjectResDTO);
+            }
+            userResDTO.setUserProjects(userProjectResDTOS);
+        }
+        return userResDTO;
     }
 
     @Override
@@ -208,7 +219,21 @@ public class UserService implements IUserService, UserDetailsService {
     @Override
     public List<UserResDTO> getAllUserHadSameProject(Long userId) {
         List<User> userList = userRepository.getAllUserHadSameProject(userId);
-
-        return userList.stream().map(userMapper::toUserResDTO).collect(Collectors.toList());
+        List<UserResDTO> userResDTOS = new ArrayList<>();
+        for (User user : userList) {
+            UserResDTO userResDTO = userMapper.toUserResDTO(user);
+            if (!user.getUserProjects().isEmpty()) {
+                List<UserProjectResDTO> userProjectResDTOS = new ArrayList<>();
+                for (UserProject userProject : user.getUserProjects()) {
+                    UserProjectResDTO userProjectResDTO = new UserProjectResDTO();
+                    userProjectResDTO.setProjectId(userProject.getProject().getId());
+                    userProjectResDTO.setUserId(userProject.getUser().getId());
+                    userProjectResDTOS.add(userProjectResDTO);
+                }
+                userResDTO.setUserProjects(userProjectResDTOS);
+            }
+            userResDTOS.add(userResDTO);
+        }
+        return userResDTOS;
     }
 }
