@@ -2,6 +2,7 @@ package com.example.sourcebase.service.impl;
 
 import com.example.sourcebase.domain.*;
 import com.example.sourcebase.domain.dto.resdto.user.UserDetailResDTO;
+import com.example.sourcebase.domain.dto.resdto.user.UserProjectResDTO;
 import com.example.sourcebase.repository.*;
 import com.example.sourcebase.domain.dto.reqdto.user.RegisterReqDTO;
 import com.example.sourcebase.domain.dto.reqdto.user.UserLoginReqDTO;
@@ -25,6 +26,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -44,8 +46,7 @@ public class UserService implements IUserService, UserDetailsService {
     IPositionRepository positionRepository;
     PasswordEncoder passwordEncoder;
     UploadService uploadService;
-
-
+    IUserProjectRepository userProjectRepository;
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -58,12 +59,13 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public UserResDTO register(RegisterReqDTO registerReqDTO , MultipartFile avatar) throws IOException {
+    public UserResDTO register(RegisterReqDTO registerReqDTO, MultipartFile avatar) throws IOException {
         if (userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(
                 registerReqDTO.getEmail(),
                 registerReqDTO.getUsername(),
                 registerReqDTO.getPhoneNumber())) {
             log.LogError(ErrorCode.USERNAME_EXISTS);
+            throw new AppException(ErrorCode.USERNAME_EXISTS);
         }
         FileInfo fileInfo = uploadService.saveAvatar(avatar);
 
@@ -83,13 +85,11 @@ public class UserService implements IUserService, UserDetailsService {
 
     private void saveRank(User user, String positionInput, String level) {
 
-            Position position = positionRepository.findByName(positionInput);
+        Position position = positionRepository.findByName(positionInput);
         if (position == null) {
             throw new IllegalArgumentException("Position not found");
         }
-
         Rank rank = rankRepository.findByPositionIdAndLevel(position.getId(), level);
-        // Thiết lập rank cho user và lưu user
         user.setRank(rank);
         userRepository.save(user);
     }
@@ -119,9 +119,22 @@ public class UserService implements IUserService, UserDetailsService {
     }
 
     @Override
-    public List<UserResDTO> getAllUser(){
-        List<User> userResDTOs = userRepository.findAll();
-        return userResDTOs.stream().map(userMapper::toUserResDTO).collect(Collectors.toList());
+    public List<UserResDTO> getAllUser() {
+        List<User> users = userRepository.findAll();
+        List<UserResDTO> userResDTOS = new ArrayList<>();
+        for (User user : users) {
+            UserResDTO userResDTO = userMapper.toUserResDTO(user);
+            List<UserProjectResDTO> userProjectResDTOS = new ArrayList<>();
+            for (UserProject userProject : user.getUserProjects()) {
+                UserProjectResDTO userProjectResDTO = new UserProjectResDTO();
+                userProjectResDTO.setProjectId(userProject.getProject().getId());
+                userProjectResDTO.setUserId(userProject.getUser().getId());
+                userProjectResDTOS.add(userProjectResDTO);
+            }
+            userResDTO.setUserProjects(userProjectResDTOS);
+            userResDTOS.add(userResDTO);
+        }
+        return userResDTOS;
     }
 
     @Override
@@ -144,7 +157,7 @@ public class UserService implements IUserService, UserDetailsService {
             } else {
                 throw new AppException(ErrorCode.USER_NOT_FOUND);
             }
-        }catch (Exception e){
+        } catch (Exception e) {
             System.out.println(e);
         }
         return false;
@@ -156,13 +169,13 @@ public class UserService implements IUserService, UserDetailsService {
         User existingUser = userRepository.findById(id)
                 .orElseThrow(() -> new AppException(ErrorCode.USER_NOT_FOUND));
         FileInfo fileInfo = uploadService.saveAvatar(avatar);
-        if(request.getEmail() != null &&!request.getEmail().equals(existingUser.getEmail())) {
-            if(userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(request.getEmail(), null, null)) {
+        if (request.getEmail() != null && !request.getEmail().equals(existingUser.getEmail())) {
+            if (userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(request.getEmail(), null, null)) {
                 throw new IllegalArgumentException("Email already exists");
             }
         }
-        if(request.getPhoneNumber() != null &&!request.getPhoneNumber().equals(existingUser.getPhoneNumber())) {
-            if(userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(null, request.getPhoneNumber(), null)) {
+        if (request.getPhoneNumber() != null && !request.getPhoneNumber().equals(existingUser.getPhoneNumber())) {
+            if (userRepository.existsUserByEmailIgnoreCaseOrUsernameIgnoreCaseOrPhoneNumber(null, request.getPhoneNumber(), null)) {
                 throw new IllegalArgumentException("Phone already exists");
             }
         }
@@ -183,6 +196,7 @@ public class UserService implements IUserService, UserDetailsService {
         User updatedUser = userRepository.save(existingUser);
         return userMapper.toUserResDTO(updatedUser);
     }
+
     @Transactional
     public void saveUserRole(User user, Role role) {
         UserRole userRole = new UserRole(user, role);
