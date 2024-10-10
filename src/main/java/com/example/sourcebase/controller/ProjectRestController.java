@@ -24,6 +24,7 @@ import java.util.Map;
 public class ProjectRestController {
     IProjectService projectService;
 
+
     @PostMapping("/add")
     public ResponseEntity<ResponseData<?>> createProject(@Valid @RequestBody ProjectReqDTO projectRequest, BindingResult bindingResult) {
         return ResponseEntity.ok(
@@ -72,4 +73,16 @@ public class ProjectRestController {
                             .data(updatedProject)
                             .build());
         }
+    @PostMapping("/{projectId}/employees")
+    public ResponseEntity<ResponseData<?>> addEmployeesToProject(
+            @PathVariable Long projectId,
+            @RequestBody ProjectReqDTO requestDTO) {
+        ProjectResDTO responseDTO = projectService.addEmployeesToProject(projectId, requestDTO);
+        return ResponseEntity.ok(
+                ResponseData.builder()
+                        .code(SuccessCode.CREATED.getCode())
+                        .message(SuccessCode.CREATED.getMessage())
+                        .data(responseDTO)
+                        .build());
+    }
 }

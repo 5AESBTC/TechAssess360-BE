@@ -3,6 +3,7 @@ package com.example.sourcebase.service.impl;
 import com.example.sourcebase.domain.Project;
 
 import com.example.sourcebase.domain.User;
+import com.example.sourcebase.domain.UserProject;
 import com.example.sourcebase.domain.dto.reqdto.ProjectReqDTO;
 import com.example.sourcebase.domain.dto.resdto.ProjectResDTO;
 import com.example.sourcebase.domain.dto.resdto.user.UserResDTO;
@@ -10,11 +11,12 @@ import com.example.sourcebase.exception.AppException;
 import com.example.sourcebase.mapper.ProjectMapper;
 import com.example.sourcebase.repository.IProjectRepository;
 import com.example.sourcebase.repository.IUserProjectRepository;
+import com.example.sourcebase.repository.IUserRepository;
 import com.example.sourcebase.service.IProjectService;
 import com.example.sourcebase.util.ErrorCode;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -29,6 +31,7 @@ public class ProjectService implements IProjectService {
 
     IProjectRepository projectRepository;
     IUserProjectRepository userProjectRepository;
+    IUserRepository userRepository;
 
 
     @Override
@@ -85,6 +88,42 @@ public class ProjectService implements IProjectService {
             Project updatedProject = projectRepository.save(existingProject);
             return ProjectMapper.INSTANCE.toResponseDTO(updatedProject);
         }).orElse(null);
+    }
+
+    @Transactional
+    public ProjectResDTO addEmployeesToProject(Long projectId, ProjectReqDTO requestDTO) {
+        Project project = projectRepository.findById(projectId)
+                .orElseThrow(() -> new AppException(ErrorCode.PROJECT_NOT_FOUND));
+
+        List<User> usersToAdd = userRepository.findAllById(requestDTO.getEmployeeIds());
+
+        if (usersToAdd.size() != requestDTO.getEmployeeIds().size()) {
+            throw new AppException(ErrorCode.USER_NOT_FOUND);
+        }
+
+        List<UserProject> newUserProjects = usersToAdd.stream()
+                .map(user -> {
+                    UserProject userProject = new UserProject();
+                    userProject.setProject(project);
+                    userProject.setUser(user);
+                    return userProject;
+                })
+                .collect(Collectors.toList());
+
+        userProjectRepository.saveAll(newUserProjects);
+
+        // Map users to DTOs
+        List<UserResDTO> addedUserDTOs = ProjectMapper.INSTANCE.toUserDTOs(usersToAdd);
+
+        // Create and set the ProjectResDTO
+        ProjectResDTO responseDTO = new ProjectResDTO();
+        responseDTO.setId(project.getId());
+        responseDTO.setName(project.getName());
+        responseDTO.setStartDay(project.getStartDay());
+        responseDTO.setEndDay(project.getEndDay());
+        responseDTO.setMembers(addedUserDTOs);
+
+        return responseDTO;
     }
 
 
