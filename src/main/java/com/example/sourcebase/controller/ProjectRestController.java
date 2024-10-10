@@ -5,17 +5,12 @@ import com.example.sourcebase.domain.dto.resdto.ProjectResDTO;
 import com.example.sourcebase.service.IProjectService;
 import com.example.sourcebase.util.ResponseData;
 import com.example.sourcebase.util.SuccessCode;
-import com.example.sourcebase.util.ErrorCode;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.validation.BindingResult;
-import org.springframework.validation.FieldError;
-
-import java.util.HashMap;
-import java.util.Map;
 
 @RestController
 @AllArgsConstructor
@@ -46,11 +41,11 @@ public class ProjectRestController {
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<ResponseData<?>> deleteProject(@PathVariable Long id) {
-        boolean isDeleted = projectService.deleteProject(id);
         return ResponseEntity.ok(
                 ResponseData.builder()
                         .code(SuccessCode.DELETE_SUCCESSFUL.getCode())
                         .message(SuccessCode.DELETE_SUCCESSFUL.getMessage())
+                        .data(projectService.deleteProject(id))
                         .build());
     }
 
@@ -60,7 +55,7 @@ public class ProjectRestController {
                 ResponseData.builder()
                         .code(SuccessCode.GET_SUCCESSFUL.getCode())
                         .message(SuccessCode.GET_SUCCESSFUL.getMessage())
-                        .data(projectService.getPrjectById(id))
+                        .data(projectService.getProjectById(id))
                         .build());
     }
     @PutMapping("/{id}")

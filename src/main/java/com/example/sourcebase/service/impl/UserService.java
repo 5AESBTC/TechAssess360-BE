@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -69,6 +70,8 @@ public class UserService implements IUserService, UserDetailsService {
         registerReqDTO.setPassword(passwordEncoder.encode(registerReqDTO.getPassword()));
         User userNew = userMapper.toUser(registerReqDTO);
         userNew.setFileInfo(fileInfo);
+        userNew.setCreatedAt(LocalDateTime.now());
+        userNew.setActive(true);
         User createdUser = userRepository.save(userNew);
         saveUserRole(userNew, roleRepository.findById(2L).orElseThrow(() -> new NoSuchElementException("Role not found")));
         saveRank(userNew, registerReqDTO.getPosition(), registerReqDTO.getLevel());
@@ -135,6 +138,7 @@ public class UserService implements IUserService, UserDetailsService {
             if (userOpt.isPresent()) {
                 User user = userOpt.get();
                 user.setDeleted(true);
+                user.setActive(false);
                 userRepository.save(user);
                 return true;
             } else {

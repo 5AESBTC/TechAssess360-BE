@@ -18,6 +18,7 @@ import java.io.IOException;
 @RequestMapping("/api/auths")
 @AllArgsConstructor
 @FieldDefaults(level = lombok.AccessLevel.PRIVATE, makeFinal = true)
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class AuthRestController {
     IUserService userService;
 
@@ -32,7 +33,7 @@ public class AuthRestController {
         );
     }
     @PostMapping("/register")
-    public ResponseEntity<ResponseData<?>> register(@RequestParam(value = "user", required = false) RegisterReqDTO registerReqDTO, @RequestParam(value = "avatar", required = false) MultipartFile avatar) throws IOException {
+    public ResponseEntity<ResponseData<?>> register(RegisterReqDTO registerReqDTO, @RequestParam(value = "avatar", required = false) MultipartFile avatar) throws IOException {
         return ResponseEntity.ok(
                 ResponseData.builder()
                         .code(SuccessCode.CREATED.getCode())

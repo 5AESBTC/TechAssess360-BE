@@ -6,9 +6,10 @@ import com.example.sourcebase.domain.User;
 import com.example.sourcebase.domain.UserProject;
 import com.example.sourcebase.domain.dto.reqdto.ProjectReqDTO;
 import com.example.sourcebase.domain.dto.resdto.ProjectResDTO;
-import com.example.sourcebase.domain.dto.resdto.user.UserResDTO;
+import com.example.sourcebase.domain.dto.resdto.user.UserProjectResDTO;
 import com.example.sourcebase.exception.AppException;
 import com.example.sourcebase.mapper.ProjectMapper;
+import com.example.sourcebase.mapper.UserMapper;
 import com.example.sourcebase.repository.IProjectRepository;
 import com.example.sourcebase.repository.IUserProjectRepository;
 import com.example.sourcebase.repository.IUserRepository;
@@ -20,8 +21,8 @@ import lombok.experimental.FieldDefaults;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -33,6 +34,8 @@ public class ProjectService implements IProjectService {
     IUserProjectRepository userProjectRepository;
     IUserRepository userRepository;
 
+    ProjectMapper projectMapper = ProjectMapper.INSTANCE;
+    UserMapper userMapper = UserMapper.INSTANCE;
 
     @Override
     public ProjectResDTO addProject(ProjectReqDTO projectRequest) {
@@ -49,21 +52,37 @@ public class ProjectService implements IProjectService {
 
     @Override
     public List<ProjectResDTO> getAll() {
+        // Lấy tất cả các dự án từ repository
         List<Project> projects = projectRepository.findAll();
-        List<ProjectResDTO> projectResDTOS = ProjectMapper.INSTANCE.toProjectResDTOs(projects);
+        List<ProjectResDTO> projectResDTOS = new ArrayList<>();
 
-        for (ProjectResDTO projectResDTO : projectResDTOS) {
-            List<User> users = userProjectRepository.findUsersByProjectId(projectResDTO.getId());
-            projectResDTO.setMembers(ProjectMapper.INSTANCE.toUserDTOs(users));
+        // Duyệt qua từng dự án
+        for (Project project : projects) {
+            // Gọi hàm getProjectById để lấy ProjectResDTO cho từng dự án
+            ProjectResDTO projectResDTO = getProjectById(project.getId());
+            projectResDTOS.add(projectResDTO);
         }
 
         return projectResDTOS;
     }
 
+
+
+
     @Override
-    public Object getPrjectById(Long id) {
-        Optional<Project> project = projectRepository.findById(id);
-        return project.orElseThrow(() -> new AppException(ErrorCode.PROJECT_NOT_FOUND));
+    public ProjectResDTO getProjectById(Long id) {
+        Project project = projectRepository.findById(id).orElse(null);
+
+        ProjectResDTO projectResDTO = projectMapper.toResponseDTO(project);
+        for (var i = 0; i < project.getUserProjects().size(); i++) {
+            for (var j = 0; j < project.getUserProjects().size(); j++) {
+                User user = userRepository.findById(project.getUserProjects().get(i).getUser().getId()).orElse(null);
+                projectResDTO.getUserProjects().get(i).setUserId(user.getId());
+                projectResDTO.getUserProjects().get(i).setProjectId(project.getId());
+            }
+        }
+
+        return projectResDTO;
     }
 
     @Override
@@ -113,19 +132,24 @@ public class ProjectService implements IProjectService {
         userProjectRepository.saveAll(newUserProjects);
 
         // Map users to DTOs
-        List<UserResDTO> addedUserDTOs = ProjectMapper.INSTANCE.toUserDTOs(usersToAdd);
-
+        List<UserProjectResDTO> userProjectResDTOS = newUserProjects.stream()
+                .map(userProject -> {
+                    UserProjectResDTO userProjectResDTO = new UserProjectResDTO();
+                    userProjectResDTO.setProjectId(projectId); // Set the project ID();
+                    userProjectResDTO.setUserId(userProject.getUser().getId());
+                    return userProjectResDTO;
+                })
+                .collect(Collectors.toList());
         // Create and set the ProjectResDTO
         ProjectResDTO responseDTO = new ProjectResDTO();
         responseDTO.setId(project.getId());
         responseDTO.setName(project.getName());
         responseDTO.setStartDay(project.getStartDay());
         responseDTO.setEndDay(project.getEndDay());
-        responseDTO.setMembers(addedUserDTOs);
+        responseDTO.setUserProjects(userProjectResDTOS);
 
         return responseDTO;
     }
-
 
 
     private void validateProject(ProjectReqDTO projectReqDTO) {

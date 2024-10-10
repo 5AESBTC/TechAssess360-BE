@@ -1,5 +1,6 @@
 package com.example.sourcebase.domain.dto.resdto.user;
 
+import com.example.sourcebase.domain.Project;
 import com.example.sourcebase.domain.dto.resdto.ProjectResDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -9,6 +10,6 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProjectResDTO {
-    private Long id;
-    private ProjectResDTO project;
+    Long projectId;
+    Long userId;
 }
