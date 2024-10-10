@@ -14,6 +14,7 @@ import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.AssertTrue;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Getter
 @Setter
@@ -26,6 +27,6 @@ public class ProjectReqDTO {
      LocalDate startDay;
 
      LocalDate endDay;
-
+List<Long> employeeIds;
 
 }

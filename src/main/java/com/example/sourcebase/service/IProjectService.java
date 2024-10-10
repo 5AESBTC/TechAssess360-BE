@@ -18,4 +18,6 @@ public interface IProjectService {
     boolean deleteProject(Long id);
 
     ProjectResDTO updateProject(Long id, ProjectReqDTO projectReqDTO);
+
+    ProjectResDTO addEmployeesToProject(Long projectId, ProjectReqDTO requestDTO);
 }
