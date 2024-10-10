@@ -1,9 +1,9 @@
 package com.example.sourcebase.util;
 
 
-import com.example.sourcebase.domain.FileInfo;
 import com.example.sourcebase.domain.Rank;
 import com.example.sourcebase.domain.dto.resdto.FileInfoResDTO;
+import com.example.sourcebase.domain.dto.resdto.user.UserProjectResDTO;
 import com.example.sourcebase.domain.dto.resdto.user.UserRoleResDTO;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -24,14 +24,14 @@ public class JwtTokenProvider {
     private int jwtExpirationInMs;
 
 
-    public String generateToken(Long id , String fullName, FileInfoResDTO fileInfoResDTO, String email, String phoneNumber, String username, Rank rank, List<UserRoleResDTO> roles) {
+    public String generateToken(Long id , String fullName, String urlImage, String email, String phoneNumber, String username, Rank rank, List<UserRoleResDTO> roles) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + jwtExpirationInMs);
 
         return Jwts.builder()
                 .claim("id", id)
                 .claim("fullName", fullName)
-                .claim("fileInfo", fileInfoResDTO)
+                .claim("urlImage", urlImage)
                 .claim("email", email)
                 .claim("phone", phoneNumber)
                 .claim("username", username)

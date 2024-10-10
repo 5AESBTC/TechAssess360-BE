@@ -2,7 +2,6 @@ package com.example.sourcebase.domain.dto.resdto.user;
 
 import com.example.sourcebase.domain.Rank;
 import com.example.sourcebase.domain.dto.resdto.FileInfoResDTO;
-import com.example.sourcebase.domain.dto.resdto.RoleDTO;
 import com.example.sourcebase.domain.enumeration.EGender;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -26,11 +25,9 @@ public class UserResDTO {
     EGender gender;
     String username;
     String password;
-     boolean isDeleted;
-
+    boolean isDeleted;
     Rank rank;
-    FileInfoResDTO fileInfoResDto;
+    FileInfoResDTO fileInfo;
     List<UserRoleResDTO> userRoles;
-    List<UserProjectDTO> userProjects;
-
+    List<UserProjectResDTO> userProjects;
 }

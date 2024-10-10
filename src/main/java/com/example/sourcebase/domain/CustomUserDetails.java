@@ -13,17 +13,13 @@ import java.util.List;
 public class CustomUserDetails extends User implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
-
     public CustomUserDetails(User user, List<UserRole> roles) {
         this.setId(user.getId());
         this.setEmail(user.getEmail());
         this.setPhoneNumber(user.getPhoneNumber());
-        this.setGender(user.getGender());
         this.setUsername(user.getUsername());
         this.setPassword(user.getPassword());
-        this.setName(user.getName());
         this.setUserRoles(roles);
-        this.setRank(user.getRank());
 
         List<GrantedAuthority> auths = new ArrayList<>();
 
